@@ -33,9 +33,7 @@ const Navbar = () => {
                   <li className="nav-item" ><NavLink to="/favourites" activeclassname="active">Favourites</NavLink></li>
                   <li className="nav-item" ><NavLink to="/news" activeclassname="active">News</NavLink></li>
                   <li className="nav-item" ><NavLink to="/contact" activeclassname="active">Contact</NavLink></li>
-                  <div className="nav-login">
-                    <li className="nav-item nav-login-page" ><NavLink to="/login" activeclassname="active">Log In</NavLink></li>
-                  </div>
+                  <li className="nav-item nav-login-page" ><NavLink to="/login" activeclassname="active">Sign In</NavLink></li>
                 </ul>
               </div>
             </Grid>
