@@ -2,7 +2,7 @@ import React from "react"; //, useState
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layouts/Navbar/Navbar";
-import IndexScroll from "./components/layouts/Index_Scroll/IndexScroll";
+//import IndexScroll from "./components/layouts/Index_Scroll/IndexScroll";
 import { Contact, Favourites, Home, News, Stock, Login } from "./pages";
 import { Container } from "@mui/material";
 
@@ -12,7 +12,7 @@ function App() {
 		<div className='App'>
 			<Router>
 				<Navbar />
-				<IndexScroll />
+				{/* <IndexScroll /> */}
 				<div className='main-body'>
 				<Container>
 						{/* change to container */}
