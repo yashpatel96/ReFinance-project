@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
-  Avatar, Button, CssBaseline, TextField,
-  Link, Grid, Box, Typography, Container
+  Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container
 } from '@mui/material';
 //import SignUp from '../SignUp/SignUp';
 
@@ -16,6 +15,7 @@ const LogIn = () => {
 
   const handleEmail = () => {
     const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+Console.log(password);
     return email === '' || email === null || emailRegex.test(email);
   }
 
