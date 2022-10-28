@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
   Avatar, Button, CssBaseline, TextField,
   Link, Grid, Box, Typography, Container
 } from '@mui/material';
+//import SignUp from '../SignUp/SignUp';
 
 // const nameRegEx = /^[a-zA-Z]+$/;
 
@@ -111,11 +113,14 @@ const LogIn = () => {
           >
             Sign In
           </Button>
-          <Grid container>
+          <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+            <NavLink to="/signup">
+              <Typography variant="body2" color="primary">Don't have an account? Sign Up</Typography>
+            </NavLink>
+             {/*  <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
-              </Link>
+              </Link> */}
             </Grid>
           </Grid>
         </Box>
