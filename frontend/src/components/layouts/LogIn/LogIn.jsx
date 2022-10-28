@@ -15,7 +15,7 @@ const LogIn = () => {
 
   const handleEmail = () => {
     const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-Console.log(password);
+console.log(password);
     return email === '' || email === null || emailRegex.test(email);
   }
 
