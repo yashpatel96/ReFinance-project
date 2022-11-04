@@ -9,17 +9,16 @@ const News = require("./routes/News");
 const Search = require("./routes/Search");
 const StockData = require("./routes/StockData");
 const User = require("./routes/User");
-//
 
 app.get("/", (req, res) => {
 	res.status(200).send("WHATABYTE: Food For Devs");
 });
 
 app.use("/indices", Indices);
-app.use("./news", News);
-app.use("./search", Search);
-app.use("./stockData", StockData);
-app.use("./user", User);
+app.use("/news", News);
+app.use("/search", Search);
+app.use("/stock/:id", StockData);
+app.use("/user", User);
 
 app.listen(port, () => {
 	console.log(`Listening to requests on http://localhost:${port}`);
