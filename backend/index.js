@@ -4,7 +4,6 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 require("dotenv").config();
-const Indices = require("./routes/Indices");
 const News = require("./routes/News");
 const Search = require("./routes/Search");
 const StockData = require("./routes/StockData");
@@ -15,7 +14,6 @@ app.get("/", (req, res) => {
 	res.status(200).send("WHATABYTE: Food For Devs");
 });
 
-app.use("/indices", Indices);
 app.use("./news", News);
 app.use("./search", Search);
 app.use("./stockData", StockData);
