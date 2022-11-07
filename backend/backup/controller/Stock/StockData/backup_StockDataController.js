@@ -1,12 +1,10 @@
-const { MongoClient } = require("mongodb");
-const client = new MongoClient(process.env.DATABASE_MONGO);
-client.connect();
-require("dotenv").config();
-const db = client.db("Refinance").collection("stock");
+const db = require('../model/DBModel').collection("Refinance_Stock");
 
 const getStock = async (req, res) => {
+	let id = req.params.id;
+	console.log("Testing call");
 	const api = new testingProxy();
-  const result = await api.findValue("CAL");
+  const result = await api.findValue(id);
 	res.json(result);
 };
 
@@ -26,7 +24,7 @@ function testingProxy() {
     if(this.cache[stockName] == null){
       this.cache[stockName] = await this.api.findValue(stockName);
     }
-    //console.log("After", this.cache);
+    console.log("After", this.cache);
     return this.cache[stockName];
 /* 		console.log("External call");
 		const result = await db.findOne({ symbol: stockName });
