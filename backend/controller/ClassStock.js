@@ -5,7 +5,7 @@ class stock {
 		this.stockName = stockName;
 	}
 
-	getDataAPI = async (link) => {
+	getDataApi = async (link) => {
 		return await axios
 			.get(link)
 			.then((response) => {
@@ -20,9 +20,9 @@ class stock {
 		return res > 0;
 	};
 
-	checkFieldExist = async () => {
-		const res = await db.count({ symbol: stockName, stockData: null });
-		return res === 1;
+	checkFieldNotExist = async () => {
+		const res = await db.count({ symbol: this.stockName, stockData: { $exists: true } });
+		return res === 0;
 	};
 
 	getStockData = async () => {
@@ -45,12 +45,14 @@ class stock {
 const stockData = async (stockName) => {
 	try {
 		const result = new stock(stockName);
-		return result.getStockData;
+		return res.json(await result.getStockData());
 	} catch (error) {
 		console.error("error", error);
 		return error;
 	}
 };
+
+
 
 module.exports = stockData;
 
