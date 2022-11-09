@@ -12,7 +12,7 @@ const findData = async (stockName) => {
 	return await db.findOne({ symbol: stockName });
 };
 
-const updateData = async (stockName, fieldName) => {
+const updateData = async (stockName, fieldName, result) => {
 	return await db.updateOne(
 		{ symbol: stockName },
 		{
