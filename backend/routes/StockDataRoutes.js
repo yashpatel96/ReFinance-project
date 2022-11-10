@@ -1,15 +1,11 @@
 const express = require("express");
 const router = express.Router();
-//const stockData = require("../controller/StockDataController");
-const stockData = require("../controller/GraphController");
+const addStockData = require("../controller/AddStockDataController");
+const getStockData = require("../controller/GetStockDataController");
 
-router.get("/", stockData);
-
-/* router.get("/home", async (req, res) => {
-    const stockName = req.query.stockName;
-    const action = req.query.action;
-    const home = "home";
-    return res.json(await stockData(stockName, action, home));
-}); */
+router.get("/", getStockData);
+router.post("/addstock", addStockData);
+/* router.post("/", StockDataController);
+router.remove("/", StockDataController); */
 
 module.exports = router;
