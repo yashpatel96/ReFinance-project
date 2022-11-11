@@ -8,11 +8,22 @@ const checkFieldExist = async (stockName, fieldName) => {
 	return await db.count({ symbol: stockName, [fieldName]: { $exists: true } });
 };
 
-const findData = async (stockName) => {
-	return await db.findOne({ symbol: stockName });
+const findData = async (stockName, fieldName) => {
+	return await db.findOne(
+		{ symbol: stockName },
+		{
+			projection: {
+				description: 1,
+				currency: 1,
+				mic: 1,
+				type: 1,
+				[fieldName]: 1,
+			},
+		}
+	);
 };
 
-const updateData = async (stockName, fieldName) => {
+const updateData = async (stockName, fieldName, result) => {
 	return await db.updateOne(
 		{ symbol: stockName },
 		{

@@ -4,6 +4,7 @@ const cors = require("cors");
 const StockDataRoutes = require("./routes/StockDataRoutes");
 const app = express();
 app.use(cors());
+app.use(express.json());
 require("dotenv").config();
 
 app.get("/", (req, res) => {

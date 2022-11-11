@@ -1,5 +1,4 @@
-const db = require("../model/DBModel").collection("Refinance_Stock");
-const { countStock, checkFieldExist, findData, updateData } = require("../model/StockDataModel");
+const { countStock, checkFieldExist, findData, updateData } = require("../../model/StockDataModel");
 const axios = require("axios");
 
 class graph {
@@ -43,7 +42,7 @@ class graph {
 	addGraph = async () => {
 		const result = await this.getNewGraphData();
 		if (result !== {} || result !== "" || result !== null) {
-			await updateData(this.stockName, "candle")
+			await updateData(this.stockName, "candle", result);
 		}
 		const res = await this.searchData();
 		return res;
