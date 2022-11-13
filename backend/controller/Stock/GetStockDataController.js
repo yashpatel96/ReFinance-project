@@ -1,10 +1,10 @@
-const { countStock, checkFieldExist, findData, updateData } = require("../model/StockDataModel");
+const { countStock, checkFieldExist, findData, updateData } = require("../../model/StockDataModel");
 const axios = require("axios");
 
 class getStock {
-	constructor(stockName, fieldName) {
-		this.stockName = stockName;
-		this.fieldName = fieldName;
+	constructor(stock_name, field_name) {
+		this.stock_name = stock_name;
+		this.field_name = field_name;
 	}
 
 	getDataApi = async (link) => {
@@ -17,45 +17,45 @@ class getStock {
 	};
 
 	checkStockExist = async () => {
-		const res = await countStock(this.stockName);
+		const res = await countStock(this.stock_name);
 		return res > 0;
 	};
 
 	checkFieldNotExist = async () => {
-		const res = await checkFieldExist(this.stockName, this.fieldName);
+		const res = await checkFieldExist(this.stock_name, this.field_name);
 		return res === 0;
 	};
 
 	searchData = async () => {
-		const res = await findData(this.stockName, this.fieldName);
+		const res = await findData(this.stock_name, this.field_name);
 		return res; // res[candle]
 		//, { projection: {currency: 1, description: 1}}
 		//, projection: {candle:1}
 	};
 
 	getNewCompanyData = async () => {
-		//const basic_financial = `https://finnhub.io/api/v1/stock/metric?symbol=${stockName}&metric=all&token=${process.env.FINHUB_API_KEY}`;
-		const dataLink = `https://finnhub.io/api/v1/quote?symbol=${this.stockName}&token=${process.env.FINHUB_API_KEY}`;
+		//const basic_financial = `https://finnhub.io/api/v1/stock/metric?symbol=${stock_name}&metric=all&token=${process.env.FINHUB_API_KEY}`;
+		const dataLink = `https://finnhub.io/api/v1/quote?symbol=${this.stock_name}&token=${process.env.FINHUB_API_KEY}`;
 		return await this.getDataApi(dataLink);
 	};
 
 	getNewNewsData = async () => {
 		const startDate = new Date(Date.now() - 604800).toISOString().slice(0, 10);
 		const endDate = new Date().toISOString().slice(0, 10);
-		const dataLink = `https://finnhub.io/api/v1/company-news?symbol=${this.stockName}&from=${startDate}&to=${endDate}&token=${process.env.FINHUB_API_KEY}`;
+		const dataLink = `https://finnhub.io/api/v1/company-news?symbol=${this.stock_name}&from=${startDate}&to=${endDate}&token=${process.env.FINHUB_API_KEY}`;
 		return await this.getDataApi(dataLink);
 	};
 
 	getNewGraphData = async () => {
 		const startDate = Math.floor(Date.now() / 1000 - 432000);
 		const endDate = Math.floor(Date.now() / 1000);
-		const dataLink = `https://finnhub.io/api/v1/stock/candle?symbol=${this.stockName}&resolution=5&from=${startDate}&to=${endDate}&token=${process.env.FINHUB_API_KEY}`;
+		const dataLink = `https://finnhub.io/api/v1/stock/candle?symbol=${this.stock_name}&resolution=5&from=${startDate}&to=${endDate}&token=${process.env.FINHUB_API_KEY}`;
 		return await this.getDataApi(dataLink);
 	};
 
 	addCurrentStockData = async () => {
 		let result;
-		switch (this.fieldName) {
+		switch (this.field_name) {
 			case "data":
 				result = await this.getNewCompanyData();
 				break;
@@ -71,7 +71,7 @@ class getStock {
 		}
 		console.log(await result);
 		if (result !== {} && result !== "" && result !== null && result !== []) {
-			await updateData(this.stockName, this.fieldName, result);
+			await updateData(this.stock_name, this.field_name, result);
 		}
 
 		const res = await this.searchData();
@@ -87,7 +87,7 @@ class getStock {
 
 		const result = await this.searchData();
 		const FIVE_MINUTE_DELAY = 300000;
-		const LastUpdatedUnix = Math.floor(new Date(result[this.fieldName].LastUpdated).getTime());
+		const LastUpdatedUnix = Math.floor(new Date(result[this.field_name].LastUpdated).getTime());
 		const fiveMinuteDelayUnix = Math.floor(Date.now() - FIVE_MINUTE_DELAY);
 
 		if (LastUpdatedUnix <= fiveMinuteDelayUnix) {
@@ -99,10 +99,10 @@ class getStock {
 }
 
 const getStockData = async (req, res) => {
-		const stockName = req.query.id;
-		const fieldName = req.query.field;
-		if (stockName !== "" && stockName !== undefined && fieldName !== "" && fieldName !== undefined) {
-			const result = new getStock(stockName, fieldName);
+		const stock_name = req.query.id;
+		const field_name = req.query.field;
+		if (stock_name !== "" && stock_name !== undefined && field_name !== "" && field_name !== undefined) {
+			const result = new getStock(stock_name, field_name);
 			return res.json(await result.findStockData());
 		}
 		return res.status(400).json({400: "Cannot fetch the request check the parameters in the URL"});
