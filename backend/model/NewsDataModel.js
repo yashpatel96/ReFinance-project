@@ -1,4 +1,4 @@
-const db = require("./DBModel").collection("Refinance_User");
+const db = require("./DBModel").collection("Refinance_News");
 
 const userExists = async (user_email, password) => {
     return await db.count({ email: user_email, password: password }) === 1;
