@@ -3,44 +3,41 @@ const { getUserRole } = require("../../model/UserDataModel");
 //const axios = require("axios");
 
 class addStock {
-  constructor(stockToAdd) {
-    this.stockToAdd = stockToAdd;
+	constructor(stockToAdd) {
+		this.stockToAdd = stockToAdd;
+	}
 
-  }
+	checkUserIsAdmin = async () => {
+		return await getUserRole(this.stockToAdd.user_email);
+	};
 
-  checkUserIsAdmin = async () => {
-    return await getUserRole(this.stockToAdd.user_email);
-  }
-
-  addStockData = async () => {
-    if ( await this.checkUserIsAdmin() && await countStock(this.stockToAdd.symbol) === 0) {
-      const result = await addStockDataToDB(this.stockToAdd);
-      return result;
-    }
-    return false;
-  }
+	addStockData = async () => {
+		if ((await this.checkUserIsAdmin()) && (await countStock(this.stockToAdd.symbol)) === 0) {
+			const result = await addStockDataToDB(this.stockToAdd);
+			return result;
+		}
+		return false;
+	};
 }
 
 const addStockData = async (req, res) => {
-  const reqBody = req.body;
-  const addData = new addStock(reqBody);
-  console.log(await addData.addStockData());
-  
-  const stockName = reqBody.symbol;
-  //const volume = reqBody.volume;
-  const userEmail = reqBody.user_email;
-  if (await getUserRole(userEmail)){
-    return await res.json(`The stock symbol: ${stockName} has been added to the database, userEmail=${userEmail}!`);
-  }
-  return res.status(400).json("User is not admin to add new stock to the db");
-  //const hello = Object.keys(stockToAdd).map((key, index) => {return stockToAdd[key]});
-  // console.log(hello)
-  //const result = new addStock(stockName, stockToAdd);
-  //.status(200)
-}
+	const reqBody = req.body;
+	const addData = new addStock(reqBody);
+	console.log(await addData.addStockData());
+
+	const stockName = reqBody.symbol;
+	const userEmail = reqBody.user_email;
+	if (await getUserRole(userEmail)) {
+		return await res.json(`The stock symbol: ${stockName} has been added to the database, userEmail=${userEmail}!`);
+	}
+	return res.status(400).json("User is not admin to add new stock to the db");
+	//const hello = Object.keys(stockToAdd).map((key, index) => {return stockToAdd[key]});
+	// console.log(hello)
+	//const result = new addStock(stockName, stockToAdd);
+	//.status(200)
+};
 
 module.exports = addStockData;
-
 
 /* 
 {

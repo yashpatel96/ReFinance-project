@@ -36,36 +36,34 @@ const updateData = async (stockName, fieldName, result) => {
 };
 
 const addStockDataToDB = async (stockToAdd) => {
-	try{
-		await db.insertOne( { 
+	try {
+		await db.insertOne({
 			currency: stockToAdd.currency,
 			description: stockToAdd.description,
 			mic: stockToAdd.mic,
-			type: stockToAdd.type, 
+			type: stockToAdd.type,
 			symbol: stockToAdd.symbol,
 		});
-	}	
-	catch (e) {
+	} catch (e) {
 		console.error(e);
 		return false;
-	 };
+	}
 	return true;
-}
+};
 
 const removeStockDataFromDB = async (stockToAdd) => {
-	try{
-		await db.deleteOne( { 
+	try {
+		await db.deleteOne({
 			currency: stockToAdd.currency,
-			type: stockToAdd.type, 
+			type: stockToAdd.type,
 			symbol: stockToAdd.symbol,
 		});
-	}	
-	catch (e) {
+	} catch (e) {
 		console.error(e);
 		return false;
-	 };
+	}
 	return true;
-}
+};
 
 module.exports = {
 	countStock,

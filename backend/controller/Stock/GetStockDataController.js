@@ -18,7 +18,7 @@ class getStock {
 
 	checkStockExist = async () => {
 		const res = await countStock(this.stock_name);
-		return res > 0;
+		return res === 1;
 	};
 
 	checkFieldNotExist = async () => {
@@ -70,7 +70,9 @@ class getStock {
 				break;
 		}
 		console.log(await result);
-		if (result !== {} && result !== "" && result !== null && result !== []) {
+		//!== {} && result !== "" && result !== null && result !== []
+		if (result) {
+			console.log("In here");
 			await updateData(this.stock_name, this.field_name, result);
 		}
 
@@ -99,13 +101,13 @@ class getStock {
 }
 
 const getStockData = async (req, res) => {
-		const stock_name = req.query.id;
-		const field_name = req.query.field;
-		if (stock_name !== "" && stock_name !== undefined && field_name !== "" && field_name !== undefined) {
-			const result = new getStock(stock_name, field_name);
-			return res.json(await result.findStockData());
-		}
-		return res.status(400).json({400: "Cannot fetch the request check the parameters in the URL"});
+	const stock_name = req.query.id;
+	const field_name = req.query.field;
+	if (stock_name !== "" && stock_name !== undefined && field_name !== "" && field_name !== undefined) {
+		const result = new getStock(stock_name, field_name);
+		return res.json(await result.findStockData());
+	}
+	return res.status(400).json({ 400: "Cannot fetch the request check the parameters in the URL" });
 };
 
 module.exports = getStockData;

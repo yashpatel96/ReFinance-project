@@ -3,39 +3,37 @@ const { getUserRole } = require("../../model/UserDataModel");
 //const axios = require("axios");
 
 class removeStock {
-  constructor(stockToRemove) {
-    this.stockToRemove = stockToRemove;
+	constructor(stockToRemove) {
+		this.stockToRemove = stockToRemove;
+	}
 
-  }
+	checkUserIsAdmin = async () => {
+		return await getUserRole(this.stockToRemove.user_email);
+	};
 
-  checkUserIsAdmin = async () => {
-    return await getUserRole(this.stockToRemove.user_email);
-  }
-
-  removeStockData = async () => {
-    if ( await this.checkUserIsAdmin() && await countStock(this.stockToRemove.symbol) === 1) {
-      const result = await removeStockDataFromDB(this.stockToRemove);
-      return result;
-    }
-    return false;
-  }
+	removeStockData = async () => {
+		if ((await this.checkUserIsAdmin()) && (await countStock(this.stockToRemove.symbol)) === 1) {
+			const result = await removeStockDataFromDB(this.stockToRemove);
+			return result;
+		}
+		return false;
+	};
 }
 
 const removeStockData = async (req, res) => {
-  const reqBody = req.body;
-  const removeData = new removeStock(reqBody);
-  console.log(await removeData.removeStockData());
-  
-  const stockName = reqBody.symbol;
-  const userEmail = reqBody.user_email;
-  if (await getUserRole(userEmail)){
-    return await res.json(`The stock symbol: ${stockName} has been added to the database, userEmail=${userEmail}!`);
-  }
-  return res.status(400).json("User is not admin to add new stock to the db");
-}
+	const reqBody = req.body;
+	const removeData = new removeStock(reqBody);
+	console.log(await removeData.removeStockData());
+
+	const stockName = reqBody.symbol;
+	const userEmail = reqBody.user_email;
+	if (await getUserRole(userEmail)) {
+		return await res.json(`The stock symbol: ${stockName} has been added to the database, userEmail=${userEmail}!`);
+	}
+	return res.status(400).json("User is not admin to add new stock to the db");
+};
 
 module.exports = removeStockData;
-
 
 /* 
 {

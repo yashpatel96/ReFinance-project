@@ -1,4 +1,4 @@
-const db = require('../model/DBModel').collection("Refinance_Stock");
+const db = require('../../model/DBModel').collection("Refinance_Stock");
 
 const checkFieldNotExist = async (stockName, fieldName) => {
 	const res = await db.count({ symbol: stockName, [fieldName]: null });
