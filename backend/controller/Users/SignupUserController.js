@@ -14,7 +14,7 @@ class SignupUser {
 	}
 
 	checkUserExist = async () => {
-		return await checkUserInDB(this.user_email);
+		return await checkUserInDB(this.user_email)
 	};
 
 	validateFields = () => {
@@ -37,20 +37,20 @@ class SignupUser {
 		if (!regName.test(this.user_lastname)) {
 			testResult = false;
 		}
-
 		return testResult;
 	};
 
 	checkFieldIsEmpty = () => {
 		//return this.user_email || this.user_password || this.user_firstname || this.user_lastname || this.user_role || this.user_avatar;
-		return !this.user_email || !this.user_password || !this.user_firstname || !this.user_lastname || !this.user_role || !this.user_avatar;
+		const res = !this.user_email || !this.user_password || !this.user_firstname || !this.user_lastname || !this.user_avatar;
+		return res
 	};
 
 	addUserData = async () => {
-    console.log("H1",!this.checkFieldIsEmpty())
-    console.log("H2",this.validateFields())
-		if (!this.checkFieldIsEmpty() && this.validateFields()) {
-			await addUserToDBND(this.UserData);
+		/* const userExist = await this.checkUserExist();
+		console.log("User", userExist); */
+		if (!this.checkFieldIsEmpty() && this.validateFields() && await this.checkUserExist()) {
+			return await addUserToDBND(this.UserData);
 		}
 		return "false in add user";
 	};
@@ -59,17 +59,12 @@ class SignupUser {
 const getUserDatas = async (req, res) => {
 	const reqBody = req.body;
 	const getData = new SignupUser(reqBody);
-
-	console.log("checking", await getData.addUserData());
+	const resul = await getData.addUserData();
+	console.log("checking", resul);
 
 	const stockName = reqBody.user_password;
 	const userEmail = reqBody.user_email;
 	return await res.json(`The stock pass: ${stockName} has been added to the database, userEmail=${userEmail}!`);
-	//return res.status(400).json("User is not admin to add new stock to the db");
-	//const hello = Object.keys(stockToAdd).map((key, index) => {return stockToAdd[key]});
-	// console.log(hello)
-	//const result = new addStock(stockName, stockToAdd);
-	//.status(200)
 };
 
 module.exports = getUserDatas;

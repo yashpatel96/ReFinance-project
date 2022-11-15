@@ -11,7 +11,7 @@ const getUserRole = async (user_email) => {
 };
 
 const checkUserInDB = async (user_email) => {
-	return (await db.count({ email: user_email })) === 1;
+	return (await db.count({ email: user_email })) === 0;
 	// Can add first Name and last Name to be sure
 	// return await db.count({ email: userEmail, role: "admin"}) === 1 ? true : false;
 };
@@ -60,13 +60,17 @@ const getUserDataFromDB = async (user_email) => {
 };
 
 const addUserToDBND = async (userToAdd) => {
-	console.log("user",userToAdd)
-	const hashedPassword = await HashPasword(userToAdd.password);
-	userToAdd.password = hashedPassword;
+	const hashedPassword = await HashPasword(userToAdd.user_password);
+	userToAdd.user_password = hashedPassword;
 	try {
 		return await db.insertOne({
-			email: user_email,
-			password: hashedPassword,
+			email: userToAdd.user_email,
+			firstname: userToAdd.user_firstname,
+			lastname: userToAdd.user_lastname,
+			password: userToAdd.user_password,
+			avatar: userToAdd.user_avatar,
+			role: "user",
+			favourites: ""
 		});
 	} catch (e) {
 		console.error(e);

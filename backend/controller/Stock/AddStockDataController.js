@@ -20,7 +20,7 @@ class addStock {
 	};
 }
 
-const addStockData = async (req, res) => {
+const addPassedStockData = async (req, res) => {
 	const reqBody = req.body;
 	const addData = new addStock(reqBody);
 	console.log(await addData.addStockData());
@@ -37,7 +37,7 @@ const addStockData = async (req, res) => {
 	//.status(200)
 };
 
-module.exports = addStockData;
+module.exports = addPassedStockData;
 
 /* 
 {

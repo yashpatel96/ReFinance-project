@@ -88,8 +88,7 @@ model{
   stock data = company info, company data, graph, news, last updated (proxy)
   news data = picture, title, description, link, uploaded date (proxy)
   search data = return the result of the passed search query
-  user data = role, first name, last name, email, password, favourites, avatar, salt or hex only
-}
+  user data = role, first name, last name, email, password, favourites, avatar
 
 routes{
   stock data = /stockData
