@@ -71,7 +71,7 @@ class getStock {
 		}
 		console.log(await result);
 		//!== {} && result !== "" && result !== null && result !== []
-		if (result) {
+		if (!result) {
 			console.log("In here");
 			await updateData(this.stock_name, this.field_name, result);
 		}

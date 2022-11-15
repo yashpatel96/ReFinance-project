@@ -1,0 +1,30 @@
+.testing_this {
+	position: relative;
+	display: flex;
+}
+
+.graph {
+	width: 100%;
+    max-width: 450px;
+    margin: 10px;
+}
+
+.graph_details_container {
+    margin: 10px;
+}
+
+@media screen and (max-width: 800px) {
+	.testing_this {
+        flex-direction: column;
+	}
+
+    .graph {
+        width: 100%;
+        max-width: 450px;
+        margin: auto;
+    }
+
+    .graph_details_container{
+        text-align: center;
+    }
+}

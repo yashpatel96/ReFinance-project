@@ -47,7 +47,7 @@ console.log(password);
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 4,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -157,6 +157,19 @@ console.log(password);
               }
             }}
           />
+          <Button 
+          variant="contained" 
+          component="label" 
+          
+          sx={{
+            width: '70%',
+            mt: 2, mb: 1, bgcolor: '#145ea8','&:hover': {
+              background: "#166abd",
+            },
+            }}>
+            Upload Avatar Image
+            <input type="file" hidden accept="image/*" />
+          </Button>
           <Button
             type="submit"
             fullWidth

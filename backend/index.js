@@ -5,6 +5,7 @@ require("dotenv").config();
 const StockDataRoutes = require("./routes/StockDataRoutes");
 const UserDataRoutes = require("./routes/UserDataRoutes");
 const NewsDataRoutes = require("./routes/NewsDataRoutes");
+const SearchDataRoutes = require("./routes/SearchDataRoutes");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 app.use("/stock", StockDataRoutes);
 app.use("/user", UserDataRoutes);
 app.use("/homenews", NewsDataRoutes);
+app.use("/search", SearchDataRoutes);
 
 app.listen(port, () => {
 	console.log(`Listening to requests on http://localhost:${port}`);
