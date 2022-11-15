@@ -12,12 +12,14 @@ const LogIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
-
+  console.log(setEmailError(false));
   const handleEmail = () => {
     const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
 console.log(password);
     return email === '' || email === null || emailRegex.test(email);
   }
+
+  console.log(handleEmail);
 
   const handleSubmit = (e) => {
     e.preventDefault();
