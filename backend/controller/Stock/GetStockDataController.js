@@ -88,6 +88,7 @@ class getStock {
 		}
 
 		const result = await this.searchData();
+		console.log(result)
 		const FIVE_MINUTE_DELAY = 300000;
 		const LastUpdatedUnix = Math.floor(new Date(result[this.field_name].LastUpdated).getTime());
 		const fiveMinuteDelayUnix = Math.floor(Date.now() - FIVE_MINUTE_DELAY);

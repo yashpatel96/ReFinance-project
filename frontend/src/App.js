@@ -6,33 +6,35 @@ import Navbar from "./components/layouts/Navbar/Navbar";
 import { Contact, Favourites, Home, Stock, Login } from "./pages";
 import { Container } from "@mui/material";
 import SignUp from "./components/layouts/SignUp/SignUp";
-
+import { AuthProvider } from "./firebase/AuthContext";
 
 function App() {
 	return (
 		<div className='App'>
-			<Router>
-				<Navbar />
-				{/* <IndexScroll /> */}
-				<div className='main-body'>
-				<Container>
-						{/* change to container */}
-						<div className='navigation'>
-							<Routes>
-								<Route path='/' element={<Home />} />
-								<Route path='/favourites' element={<Favourites />} />
-								<Route path='/contact' element={<Contact />} />
-								<Route path='/stock' element={<Stock />} />
-								<Route path='/login' element={<Login />} />
-								<Route path='/signup' element={<SignUp />} />
-								
-								{/* <Route path='/*' element={<NotFound />} /> */}
-							</Routes>
-						</div>
-					</Container>
-				</div>
-				{/* <Footer /> */}
-			</Router>
+			<AuthProvider>
+				<Router>
+					<Navbar />
+					{/* <IndexScroll /> */}
+					<div className='main-body'>
+						<Container>
+							{/* change to container */}
+							<div className='navigation'>
+								<Routes>
+									<Route path='/' element={<Home />} />
+									<Route path='/favourites' element={<Favourites />} />
+									<Route path='/contact' element={<Contact />} />
+									<Route path='/stock' element={<Stock />} />
+									<Route path='/login' element={<Login />} />
+									<Route path='/signup' element={<SignUp />} />
+
+									{/* <Route path='/*' element={<NotFound />} /> */}
+								</Routes>
+							</div>
+						</Container>
+					</div>
+					{/* <Footer /> */}
+				</Router>
+			</AuthProvider>
 		</div>
 	);
 }

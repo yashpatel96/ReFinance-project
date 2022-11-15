@@ -7,6 +7,14 @@ window.Chart = Chart
 
 const Graph = ({ symbol }) => {
   const [dat, setDat] = useState([]);
+  /* axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
+    .then(res => {
+      console.log(res.data);
+      setDat(res.data);
+    })
+    .catch(err =>
+      console.log(err)) */
+  //console.log(new Date(1668539584 * 1000).toLocaleString());
 
   useEffect(() => {
     axios.get(process.env.REACT_APP_LOCAL + 'SPX')
@@ -17,17 +25,6 @@ const Graph = ({ symbol }) => {
       .catch(err =>
         console.log(err))
   }, []);
-
-  useEffect(() => {
-    axios.get(process.env.REACT_APP_LOCAL + 'stock/')
-      .then(res => {
-        setDat(res.data);
-        //console.log( res.data);
-      })
-      .catch(err =>
-        console.log(err))
-  }, []);
-
   /*   useEffect(() => {
       // const graph_id = 'APPL';
       const graph_id = symbol[0].meta.symbol;

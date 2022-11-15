@@ -19,7 +19,6 @@ console.log(password);
     return email === '' || email === null || emailRegex.test(email);
   }
 
-  console.log(handleEmail);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,9 +27,9 @@ console.log(password);
     setEmail(data.get('email'));
     setPassword(data.get('password'))
 
-    /* if (handleEmail) {
+    if (handleEmail) {
       setEmailError(true);
-    } */
+    }
 
     console.log({
       email: data.get('email'),

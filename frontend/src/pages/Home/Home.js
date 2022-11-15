@@ -11,6 +11,7 @@ import { useDocumentTitle } from "../../components/layouts/Title/Title";
 const Home = () => {
 	useDocumentTitle("");
 	const [homeNews, setHomeNews] = useState([]);
+	//const sym = "MSFT"
 
 	useEffect(() => {
 		axios

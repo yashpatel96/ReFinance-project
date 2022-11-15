@@ -4,6 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
   Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container
 } from '@mui/material';
+import { useAuth } from '../../../firebase/AuthContext';
 
 // const nameRegEx = /^[a-zA-Z]+$/;
 
@@ -12,35 +13,30 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
 
-  const handleEmail = () => {
-    const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-console.log(password);
-    return email === '' || email === null || emailRegex.test(email);
-  }
+  const { signup } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-
+    
     setEmail(data.get('email'));
     setPassword(data.get('password'))
 
-    if (handleEmail) {
+    /* if (handleEmail) {
       setEmailError(true);
-    }
+    } */
 
     console.log({
+      firstname: data.get('password'),
+      lastname: data.get('email'),
       email: data.get('email'),
       password: data.get('password'),
+      cpassword: data.get('email'),
+      
     });
-  };
 
-  /* const handleUsernameChange = (event) => {
-    const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-    const email = event.target.value;
-    console.log(emailRegex.test(email))
-    return emailRegex.test(email);
-  } */
+    signup(data.get('email'), data.get('password'));
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,45 +56,45 @@ console.log(password);
           Sign Up
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-        <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  sx={{
-                    "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
-                    "& .MuiOutlinedInput-root.Mui-focused": {
-                      "& > fieldset": {
-                        borderColor: "rgb(17 80 110)"
-                      }
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="firstname"
+                required
+                fullWidth
+                id="firstname"
+                label="First Name"
+                sx={{
+                  "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      borderColor: "rgb(17 80 110)"
                     }
-                  }}
-                  //autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  sx={{
-                    "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
-                    "& .MuiOutlinedInput-root.Mui-focused": {
-                      "& > fieldset": {
-                        borderColor: "rgb(17 80 110)"
-                      }
+                  }
+                }}
+              //autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="lastname"
+                label="Last Name"
+                name="lastname"
+                autoComplete="family-name"
+                sx={{
+                  "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      borderColor: "rgb(17 80 110)"
                     }
-                  }}
-                />
-              </Grid>
-              </Grid>
+                  }
+                }}
+              />
+            </Grid>
+          </Grid>
           <TextField
             //noValidate
             margin="normal"
@@ -108,8 +104,7 @@ console.log(password);
             label="Email Address"
             name="email"
             variant='outlined'
-            //autoFocus
-            error={emailError}
+            //error={emailError}
             helperText={emailError ? "Incorrect email, use abc@example.com format" : ""}
             sx={{
               "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
@@ -119,7 +114,7 @@ console.log(password);
                 }
               }
             }}
-            
+
           />
           <TextField
             margin="normal"
@@ -157,15 +152,18 @@ console.log(password);
               }
             }}
           />
-          <Button 
-          variant="contained" 
-          component="label" 
-          
-          sx={{
-            width: '70%',
-            mt: 2, mb: 1, bgcolor: '#145ea8','&:hover': {
-              background: "#166abd",
-            },
+          <Button
+            variant="contained"
+            component="label"
+            name="avatar"
+            label="Confirm Password"
+            type="password"
+            id="avatar"
+            sx={{
+              width: '70%',
+              mt: 2, mb: 1, bgcolor: '#145ea8', '&:hover': {
+                background: "#166abd",
+              },
             }}>
             Upload Avatar Image
             <input type="file" hidden accept="image/*" />
@@ -184,9 +182,9 @@ console.log(password);
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-            <NavLink to="/login">
-              <Typography variant="body2" color="primary">Already have an account? Sign in</Typography>
-            </NavLink>
+              <NavLink to="/login">
+                <Typography variant="body2" color="primary">Already have an account? Sign in</Typography>
+              </NavLink>
               {/* <Link href="/login" variant="body2">
               {Already have an account? Sign in}
               </Link> */}
