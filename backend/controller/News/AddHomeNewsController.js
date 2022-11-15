@@ -10,9 +10,9 @@ class addHomeNews {
 		return await getUserRole(this.newsToAdd.user_email);
 	};
 
-    checkNewsDoesNotExist = async () => {
-        return await countNews(this.newsToAdd.news_title, this.newsToAdd.news_link)
-    }
+	checkNewsDoesNotExist = async () => {
+		return await countNews(this.newsToAdd.news_title, this.newsToAdd.news_link);
+	};
 
 	addHomeNewsData = async () => {
 		if ((await this.checkUserIsAdmin()) && (await this.checkNewsDoesNotExist())) {

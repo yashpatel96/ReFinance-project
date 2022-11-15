@@ -51,6 +51,7 @@ const getUserDataFromDB = async (user_email) => {
 					firstname: 1,
 					avatar: 1,
 					role: 1,
+					favourites: -1,
 				},
 			}
 		);
@@ -70,7 +71,7 @@ const addUserToDBND = async (userToAdd) => {
 			password: userToAdd.user_password,
 			avatar: userToAdd.user_avatar,
 			role: "user",
-			favourites: ""
+			favourites: [],
 		});
 	} catch (e) {
 		console.error(e);

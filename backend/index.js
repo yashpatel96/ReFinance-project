@@ -6,6 +6,7 @@ const StockDataRoutes = require("./routes/StockDataRoutes");
 const UserDataRoutes = require("./routes/UserDataRoutes");
 const NewsDataRoutes = require("./routes/NewsDataRoutes");
 const SearchDataRoutes = require("./routes/SearchDataRoutes");
+const FavDataRoutes = require("./routes/FavouritesDataRoutes");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use("/stock", StockDataRoutes);
 app.use("/user", UserDataRoutes);
 app.use("/homenews", NewsDataRoutes);
 app.use("/search", SearchDataRoutes);
+app.use("/fav", FavDataRoutes);
 
 app.listen(port, () => {
 	console.log(`Listening to requests on http://localhost:${port}`);

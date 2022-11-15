@@ -12,10 +12,10 @@ class loginUser {
 	};
 
 	getUserData = async () => {
-		if(await this.checkPasswordMatchWithDB()){
+		if (await this.checkPasswordMatchWithDB()) {
 			return await getUserDataFromDB(this.user_email, this.user_password);
 		}
-			return false;
+		return false;
 	};
 
 	/* addUser = async () => {

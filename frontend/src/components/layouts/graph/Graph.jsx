@@ -17,6 +17,17 @@ const Graph = ({ symbol }) => {
       .catch(err =>
         console.log(err))
   }, []);
+
+  useEffect(() => {
+    axios.get(process.env.REACT_APP_LOCAL + 'stock/')
+      .then(res => {
+        setDat(res.data);
+        //console.log( res.data);
+      })
+      .catch(err =>
+        console.log(err))
+  }, []);
+
   /*   useEffect(() => {
       // const graph_id = 'APPL';
       const graph_id = symbol[0].meta.symbol;

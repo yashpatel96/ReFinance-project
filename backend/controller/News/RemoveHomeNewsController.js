@@ -8,13 +8,13 @@ class removeHomeNews {
 
 	checkUserIsAdmin = async () => {
 		const res = await getUserRole(this.newsToRemove.user_email);
-        return res
+		return res;
 	};
 
-    checkNewsDoesNotExist = async () => {
-        const res = await countNews(this.newsToRemove.news_title, this.newsToRemove.news_link);
-        return res;
-    }
+	checkNewsDoesNotExist = async () => {
+		const res = await countNews(this.newsToRemove.news_title, this.newsToRemove.news_link);
+		return res;
+	};
 
 	removeHomeNewsData = async () => {
 		if ((await this.checkUserIsAdmin()) && !(await this.checkNewsDoesNotExist())) {

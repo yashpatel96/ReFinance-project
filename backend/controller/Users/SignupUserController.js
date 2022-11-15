@@ -14,7 +14,7 @@ class SignupUser {
 	}
 
 	checkUserExist = async () => {
-		return await checkUserInDB(this.user_email)
+		return await checkUserInDB(this.user_email);
 	};
 
 	validateFields = () => {
@@ -43,13 +43,13 @@ class SignupUser {
 	checkFieldIsEmpty = () => {
 		//return this.user_email || this.user_password || this.user_firstname || this.user_lastname || this.user_role || this.user_avatar;
 		const res = !this.user_email || !this.user_password || !this.user_firstname || !this.user_lastname || !this.user_avatar;
-		return res
+		return res;
 	};
 
 	addUserData = async () => {
 		/* const userExist = await this.checkUserExist();
 		console.log("User", userExist); */
-		if (!this.checkFieldIsEmpty() && this.validateFields() && await this.checkUserExist()) {
+		if (!this.checkFieldIsEmpty() && this.validateFields() && (await this.checkUserExist())) {
 			return await addUserToDBND(this.UserData);
 		}
 		return "false in add user";

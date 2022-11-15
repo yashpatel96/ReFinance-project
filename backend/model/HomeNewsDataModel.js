@@ -2,12 +2,12 @@ const db = require("./DBModel").collection("Refinance_News");
 
 const getHomeNews = async () => {
 	// .limit(10);
-	return await db.find().sort({ "uploaded_datetime": -1}).limit(15).toArray();
-}
+	return await db.find().sort({ uploaded_datetime: -1 }).limit(15).toArray();
+};
 
 const countNews = async (news_title, news_link) => {
-	return await db.count({ title: news_title, link: news_link }) === 0;
-}
+	return (await db.count({ title: news_title, link: news_link })) === 0;
+};
 
 const addHomeNewsDataToDB = async (newsToAdd) => {
 	try {
@@ -23,7 +23,7 @@ const addHomeNewsDataToDB = async (newsToAdd) => {
 		return false, e;
 	}
 	return true;
-}
+};
 
 const removeHomeNewsDataFromDB = async (newsToRemove) => {
 	try {
@@ -36,12 +36,11 @@ const removeHomeNewsDataFromDB = async (newsToRemove) => {
 		return false;
 	}
 	return true;
-}
-
+};
 
 module.exports = {
 	getHomeNews,
 	countNews,
 	addHomeNewsDataToDB,
-	removeHomeNewsDataFromDB
+	removeHomeNewsDataFromDB,
 };

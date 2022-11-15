@@ -1,11 +1,11 @@
 const db = require("./DBModel").collection("Refinance_Stock");
 
 const countStock = async (stockName) => {
-	return await db.count({ symbol: stockName });
+	return await db.countDocuments({ symbol: stockName });
 };
 
 const checkFieldExist = async (stockName, fieldName) => {
-	return await db.count({ symbol: stockName, [fieldName]: { $exists: true } });
+	return await db.countDocuments({ symbol: stockName, [fieldName]: { $exists: true } });
 };
 
 const findData = async (stockName, fieldName) => {
