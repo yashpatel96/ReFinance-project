@@ -4,14 +4,14 @@ import "./Home.css";
 import Graph from "../../components/layouts/graph/Graph";
 import NewsComp from "../../components/layouts/news_comp/News_comp";
 import Favourites from "../../components/layouts/favourites/Favourites";
-import sym from "../../components/layouts/graph/interval";
+//import sym from "../../components/layouts/graph/interval";
 //import company_news from "../../components/layouts/news_comp/company-news";
 import { useDocumentTitle } from "../../components/layouts/Title/Title";
 
 const Home = () => {
 	useDocumentTitle("");
 	const [homeNews, setHomeNews] = useState([]);
-	//const sym = "MSFT"
+	const sym = "MSFT"
 
 	useEffect(() => {
 		axios

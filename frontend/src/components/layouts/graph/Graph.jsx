@@ -6,31 +6,35 @@ import('./Graph.css');
 window.Chart = Chart
 
 const Graph = ({ symbol }) => {
-  const [dat, setDat] = useState([]);
-  /* axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
+  const [data, setData] = useState([]);
+  const [timestamp, setTimestamp] = useState([]);
+  useEffect(() => {
+  axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
     .then(res => {
-      console.log(res.data);
-      setDat(res.data);
+      setData(res.data.candle.result.c);
+      setTimestamp(res.data.candle.result.t);
     })
     .catch(err =>
-      console.log(err)) */
+      console.log(err))
+    }, [symbol]);
   //console.log(new Date(1668539584 * 1000).toLocaleString());
 
-  useEffect(() => {
+  /* useEffect(() => {
     axios.get(process.env.REACT_APP_LOCAL + 'SPX')
       .then(res => {
-        setDat(res.data);
+        setData(res.data);
         //console.log( res.data);
       })
       .catch(err =>
         console.log(err))
-  }, []);
+  }, []); */
+
   /*   useEffect(() => {
       // const graph_id = 'APPL';
       const graph_id = symbol[0].meta.symbol;
       axios.get(process.env.REACT_APP_LOCAL + `graph?id=${graph_id}`)
           .then (res =>{
-            setDat(res.data);
+            setData(res.data);
             //console.log( res.data);
           })
           .catch(err => 
@@ -39,33 +43,44 @@ const Graph = ({ symbol }) => {
    */
 
 
-  /* console.log(Object.keys(dat).map(keys => {
+  /* console.log(Object.keys(data).map(keys => {
     return(
-       dat[keys].symbol_name)
+       data[keys].symbol_name)
     })) */
 
   /* This is for graph modifying */
 
-  const labels = Object.keys(dat).map(keys => {
+  /* const labels = Object.keys(data).map(keys => {
     return (
-      symbol[keys].values.map(val => {  // Need to change symbol to dat
+      symbol[keys].values.map(val => {  // Need to change symbol to data
         return (
           val.datetime.split(" ")[1].split(":", 2).join(":")
         )
       })
+    ) console.log(new Date(1668539584 * 1000).toLocaleString());
+  }); */ 
+  const labels = timestamp.map(values => {
+    return new Date(values*1000).toLocaleDateString();
+  })
+  /* 
+   */
+//console.log(labels)
+  const open_Data = data.map(values => {
+    return (
+      values
     )
-  });
-
-  const open_Data = Object.keys(dat).map(key => {
+  })
+  //console.log(open_Data)
+  /* const open_Data = Object.keys(data).map(key => {
     return (
 
-      symbol[key].values.map(val => {    // Need to change symbol to dat
+      symbol[key].values.map(val => {    // Need to change symbol to data
         return (
           val.open
         )
       })
     )
-  });
+  }); */
 
   const options = {
     layout: {
@@ -83,7 +98,7 @@ const Graph = ({ symbol }) => {
     },
   };
 
-  const data = {
+  const graph_data = {
     labels: labels[0],
     datasets: [{
       label: 'My First Dataset',
@@ -98,21 +113,20 @@ const Graph = ({ symbol }) => {
 
   return (
     <>
-
       <div className="graph_parent">
 
-        <h2> {Object.keys(symbol).map(key => {
+        <h2> {symbol}{/* {Object.keys(symbol).map(key => {
           return (
             <div key={key}>
               {symbol[key].meta.symbol}
             </div>
           )
-        })}
+        })} */}
         </h2>
 
         <div className='testing_this'>
           <div className="graph">
-            <Line data={data} options={options} />
+            <Line data={graph_data} options={options} />
           </div>
 
           <div className='graph_details_container'>
@@ -135,7 +149,7 @@ export default Graph;
 
 /* axios.get(process.env.REACT_APP_LOCAL + 'graph')
     .then (res =>{
-      setDat(res.data);
+      setData(res.data);
       //console.log(res.data);
     })
     .catch(err => 
