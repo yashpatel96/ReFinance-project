@@ -1,48 +1,78 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
-  Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container
+  Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Alert
 } from '@mui/material';
-//import SignUp from '../SignUp/SignUp';
-
-// const nameRegEx = /^[a-zA-Z]+$/;
+import { useAuth } from '../../../firebase/AuthContext';
+import axios from "axios";
 
 const LogIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  //console.log(setEmailError(false));
-  const handleEmail = () => {
-    const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-    //console.log(password);
-    return email === '' || email === null || emailRegex.test(email);
-  }
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [emailErrorCheck, setEmailErrorCheck] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordErrorCheck, setPasswordErrorCheck] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
 
-    setEmail(data.get('email'));
-    setPassword(data.get('password'))
-
-    if (handleEmail) {
-      setEmailError(true);
+    if (!email) {
+      setEmailErrorCheck(true)
+      return setEmailError("Email is required")
     }
 
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if (!password) {
+      setPasswordErrorCheck(true)
+      return setPasswordError("Password is required")
+    }
+
+    try {
+      setError("")
+      setLoading(true)
+      await login(email, password);
+      await axios
+        .get(process.env.REACT_APP_LOCAL + "user")
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
+      navigate("/", {replace: true})
+    }
+    catch (error) {
+      const invalidEmail = "Firebase: Error (auth/invalid-email)."
+      const invalidPassword = "Firebase: Error (auth/wrong-password)."
+      const userNotFound = "Firebase: Error (auth/user-not-found)."
+
+      switch (error.message) {
+        case invalidEmail:
+          setEmailErrorCheck(true)
+          setError('Wrong email provided')
+          break;
+        case invalidPassword:
+          setPasswordErrorCheck(true)
+          setError('Wrong password provided')
+          break;
+        case userNotFound:
+          setError('User not found')
+          break;
+        default:
+          setError("Failed to sign in");
+          break;
+      }
+    }
+    setLoading(false);
   };
 
-  /* const handleUsernameChange = (event) => {
-    const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-    const email = event.target.value;
-    console.log(emailRegex.test(email))
-    return emailRegex.test(email);
-  } */
+  /* 
+      console.log({
+        email: data.get('email'),
+        password: data.get('password'),
+      }); */
 
   return (
     <Container component="main" maxWidth="xs">
@@ -62,8 +92,8 @@ const LogIn = () => {
           Sign in
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          {error !== "" ? <Alert sx={{ width: '100%', mb: 0.5 }} severity="error">{error}</Alert> : ""}
           <TextField
-            //noValidate
             margin="normal"
             required
             fullWidth
@@ -71,9 +101,9 @@ const LogIn = () => {
             label="Email Address"
             name="email"
             variant='outlined'
-            //autoFocus
-            error={emailError}
-            helperText={emailError ? "Incorrect email, use abc@example.com format" : ""}
+            onChange={(e) => { setEmail(e.target.value); setEmailErrorCheck(false); setEmailError('') }}
+            error={emailErrorCheck}
+            helperText={emailError} 
             sx={{
               "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
               "& .MuiOutlinedInput-root.Mui-focused": {
@@ -82,8 +112,8 @@ const LogIn = () => {
                 }
               }
             }}
-            
           />
+
           <TextField
             margin="normal"
             required
@@ -92,6 +122,9 @@ const LogIn = () => {
             label="Password"
             type="password"
             id="password"
+            error={passwordErrorCheck}
+            helperText={passwordError}
+            onChange={(e) => { setPassword(e.target.value); setPasswordErrorCheck(false); setPasswordError('') }}
             autoComplete="current-password"
             sx={{
               "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
@@ -106,22 +139,20 @@ const LogIn = () => {
             type="submit"
             fullWidth
             variant="contained"
+            disabled={loading}
             sx={{
               mt: 3, mb: 2, bgcolor: '#11506e', '&:hover': {
                 background: "rgb(17 80 110 / 92%)",
               },
-            }}//#15be3d
+            }}
           >
-            Sign In
+            Log In
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-            <NavLink to="/signup">
-              <Typography variant="body2" color="primary">Don't have an account? Sign Up</Typography>
-            </NavLink>
-             {/*  <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link> */}
+              <NavLink to="/signup">
+                <Typography variant="body2" color="primary">Don't have an account? Sign Up</Typography>
+              </NavLink>
             </Grid>
           </Grid>
         </Box>

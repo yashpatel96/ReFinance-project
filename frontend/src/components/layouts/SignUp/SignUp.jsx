@@ -1,48 +1,108 @@
+// https://www.youtube.com/watch?v=YOAeBSCkArA
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
   Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Alert
 } from '@mui/material';
 import { useAuth } from '../../../firebase/AuthContext';
+import axios from "axios";
 
-// const nameRegEx = /^[a-zA-Z]+$/;
+const regName = /^[a-zA-Z]+$/;
+const regEmail = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/;
 
 const SignUp = () => {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); 
+  const [password, setPassword] = useState('');
   const [cpassword, setCPassword] = useState('');
-  const [avatar, setAvatar] = useState(); 
+  const [avatar, setAvatar] = useState();
+
   const [error, setError] = useState("");
-  const [emailError, setEmailError] = useState(false);
+  const [firstnameError, setFirstnameError] = useState('');
+  const [firstnameErrorCheck, setFirstnameErrorCheck] = useState(false);
+  const [lastnameError, setLastnameError] = useState('');
+  const [lastnameErrorCheck, setLastnameErrorCheck] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [emailErrorCheck, setEmailErrorCheck] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordErrorCheck, setPasswordErrorCheck] = useState(false);
+/*   const [cpasswordError, setCPasswordError] = useState("");
+  const [cpasswordErrorCheck, setCPasswordErrorCheck] = useState(false); */
   const [loading, setLoading] = useState(false);
 
-  const { signup, currentUser } = useAuth();
+  const navigate = useNavigate();
+  const { signup } = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    setFirstname(data.get('firstname'))
-    setLastname(data.get('lastname'))
-    setEmail(data.get('email'));
-    setPassword(data.get('password'))
-    setCPassword(data.get('cpassword'))
-    setAvatar(data.get('avatar'))
 
+    if (!firstname){
+      setFirstnameErrorCheck(true);
+      return setFirstnameError("First name is required")
+    }
 
-    if(password !== cpassword){
+    if (!regName.test(firstname)){
+      setFirstnameErrorCheck(true)
+      return setFirstnameError("Incorrect first name")
+    }
+
+    if (!lastname){
+      setLastnameErrorCheck(true);
+      return setLastnameError("Last name is required")
+    }
+
+    if (!regName.test(lastname)){
+      setLastnameErrorCheck(true)
+      return setLastnameError("Incorrect first name")
+    }
+
+    if (!email) {
+      setEmailErrorCheck(true)
+      return setEmailError("Email is required")
+    }
+
+    if (!regEmail.test(email)){
+      setEmailErrorCheck(true)
+      return setEmailError("Incorrect email, use abc@example.com format")
+    }
+
+    if (!password) {
+      setPasswordErrorCheck(true)
+      return setPasswordError("Password is required")
+    }
+
+    if (!regPassword.test(password)){
+      setPasswordErrorCheck(true)
+      return setPasswordError("Needs to have a capital letter, a small letter, a number and a special character")
+    }
+
+    if (password !== cpassword) {
       return setError("Passwords do not match");
     }
 
-    try{
+    /* if (!cpassword) {
+      setCPasswordErrorCheck(true)
+      return setCPasswordError("Password is required, cannot be empty")
+    } */
+
+    try {
       setError("")
       setLoading(true)
       await signup(email, password);
+      await axios.post(process.env.REACT_APP_LOCAL + "user/signup", {
+      user_email: email,
+			user_firstname: firstname,
+			user_lastname: lastname,
+			user_avatar: avatar,
+      })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
+      navigate("/", { replace: true })
     }
-    catch(error){
-      console.log(error)
+    catch (error) {
       setError("Failed to create an account");
     }
     setLoading(false);
@@ -68,15 +128,15 @@ const SignUp = () => {
           alignItems: 'center',
         }}
       >
-        {currentUser}
+
         <Avatar sx={{ m: 1, bgcolor: '#3c8e4f' }}> {/* #11506e, #92f3a9 */}
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}> {/* noValidate */}
-        {error!=="" ? <Alert sx={{ width: '100%', mb: 1.5}} severity="error">{error}</Alert> : ""}
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          {error !== "" ? <Alert sx={{ width: '100%', mb: 1.5 }} severity="error">{error}</Alert> : ""}
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -86,6 +146,9 @@ const SignUp = () => {
                 fullWidth
                 id="firstname"
                 label="First Name"
+                onChange={(e) => { setFirstname(e.target.value); setFirstnameErrorCheck(false); setFirstnameError('') }}
+                error={firstnameErrorCheck}
+                helperText={firstnameError}
                 sx={{
                   "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
                   "& .MuiOutlinedInput-root.Mui-focused": {
@@ -104,6 +167,9 @@ const SignUp = () => {
                 id="lastname"
                 label="Last Name"
                 name="lastname"
+                onChange={(e) => { setLastname(e.target.value); setLastnameErrorCheck(false); setLastnameError('') }}
+                error={lastnameErrorCheck}
+                helperText={lastnameError}
                 autoComplete="family-name"
                 sx={{
                   "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
@@ -124,9 +190,10 @@ const SignUp = () => {
             id="email"
             label="Email Address"
             name="email"
+            onChange={(e) => { setEmail(e.target.value); setEmailErrorCheck(false); setEmailError('') }}
+            error={emailErrorCheck}
+            helperText={emailError}
             variant='outlined'
-            //error={emailError}
-            helperText={emailError ? "Incorrect email, use abc@example.com format" : ""}
             sx={{
               "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
               "& .MuiOutlinedInput-root.Mui-focused": {
@@ -145,6 +212,9 @@ const SignUp = () => {
             label="Password"
             type="password"
             id="password"
+            onChange={(e) => { setPassword(e.target.value); setPasswordErrorCheck(false); setPasswordError('') }}
+            error={passwordErrorCheck}
+            helperText={passwordError}
             autoComplete="current-password"
             sx={{
               "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
@@ -163,6 +233,7 @@ const SignUp = () => {
             label="Confirm Password"
             type="password"
             id="cpassword"
+            onChange={(e) => { setCPassword(e.target.value) }}
             autoComplete="confirm-password"
             sx={{
               "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(17 80 110)' },
@@ -176,6 +247,7 @@ const SignUp = () => {
           <Button
             variant="contained"
             component="label"
+            onChange={(e) => { setAvatar(e.target.files[0]) }}
             /* name="avatar"
             label="Avatar"
             type="file"
@@ -198,18 +270,15 @@ const SignUp = () => {
               mt: 2, mb: 2, bgcolor: '#327742', '&:hover': {
                 background: "#3c8e4f",
               },
-            }}//#15be3d
+            }}
           >
             SIGN UP
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <NavLink to="/login">
-                <Typography variant="body2" color="primary">Already have an account? Sign in</Typography>
+                <Typography variant="body2" color="primary">Already have an account? Log in</Typography>
               </NavLink>
-              {/* <Link href="/login" variant="body2">
-              {Already have an account? Sign in}
-              </Link> */}
             </Grid>
           </Grid>
         </Box>
@@ -219,3 +288,13 @@ const SignUp = () => {
 }
 
 export default SignUp;
+
+/* 
+    const data = new FormData(e.currentTarget);
+    setFirstname(data.get('firstname'))
+    setLastname(data.get('lastname'))
+    setEmail(data.get('email'));
+    setPassword(data.get('password'))
+    setCPassword(data.get('cpassword'))
+    setAvatar(data.get('avatar'))
+*/
