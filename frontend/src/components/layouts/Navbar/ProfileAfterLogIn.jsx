@@ -1,15 +1,32 @@
 //https://mui.com/material-ui/react-app-bar/#main-content
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, IconButton, Menu, Avatar, Tooltip, MenuItem, Typography } from "@mui/material";
 import { useAuth } from '../../../firebase/AuthContext';
+import axios from 'axios';
+
+const settings = [
+  {"name":"Add Stock", "handle_function":"handleAddStock"}, 
+  {"name":"Remove Stock", "handle_function":"handleRemoveStock"}, 
+  {"name":"Add News", "handle_function":"handleAddNews"}, 
+  {"name":"Remove News", "handle_function":"handleRemoveNews"} ]
 
 const ProfileAfterLogIn = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [error, setError] = useState("");
-  const {  logout } = useAuth() // currentUser, 
+  const [userData, setUserData] = useState();
+  const {  logout, currentUser } = useAuth() // currentUser, 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .post(process.env.REACT_APP_LOCAL + "user", { 
+        user_email: currentUser.email.toLowerCase()
+      })
+      .then((res) => {setUserData(res.data); console.log(res.data) })
+      .catch((err) => console.log(err));
+    }, [currentUser.email]);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -31,13 +48,12 @@ const ProfileAfterLogIn = () => {
     }
   }
 
-
   return (
     <div>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open menu">
           <IconButton onClick={handleOpenUserMenu} sx={{ ml: 3, mr: -1.5, p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            <Avatar alt={userData && userData.firstname} src={userData && userData.avatar}/> {/* "/static/images/avatar/2.jpg" */}
           </IconButton>
         </Tooltip>
         <Menu
@@ -54,10 +70,28 @@ const ProfileAfterLogIn = () => {
             horizontal: 'right',
           }}
           open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
+          onClose={handleCloseUserMenu} //  component="h4" variant="h6" 
         >
-          <MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">Add Stock</Typography>
+          <Typography textAlign="left"sx={{ml:2, mr: 2, fontSize: 18, fontWeight: 600}}>{userData && ("Hello, " + userData.firstname)}</Typography>
+          {userData && userData.role === "admin" ? 
+          settings.map((setting) => (
+            <MenuItem key={setting.name} onClick={() => {handleCloseUserMenu(); setting.handle_function()}}>
+              <Typography textAlign="center">{setting.name}</Typography>
+            </MenuItem>
+          )) : ""}
+          <MenuItem onClick={() => {handleLogout(); handleCloseUserMenu();}}>
+            <Typography textAlign="center">Logout</Typography>
+          </MenuItem>
+        </Menu>
+      </Box>
+    </div>
+  )
+}
+
+export default ProfileAfterLogIn;
+/* 
+<MenuItem onClick={handleCloseUserMenu}>
+            <Typography textAlign="center"></Typography>
           </MenuItem>
           <MenuItem onClick={handleCloseUserMenu}>
             <Typography textAlign="center">Remove Stock</Typography>
@@ -68,13 +102,4 @@ const ProfileAfterLogIn = () => {
           <MenuItem onClick={handleCloseUserMenu}>
             <Typography textAlign="center">Remove News</Typography>
           </MenuItem>
-          <MenuItem onClick={handleLogout}>
-            <Typography textAlign="center">Logout</Typography>
-          </MenuItem>
-        </Menu>
-      </Box>
-    </div>
-  )
-}
-
-export default ProfileAfterLogIn
+           */

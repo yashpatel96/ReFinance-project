@@ -7,9 +7,9 @@ import Search from '../Search/Search';
 import { useAuth } from '../../../firebase/AuthContext';
 import ProfileAfterLogIn from './ProfileAfterLogIn';
 
+
 const Navbar = () => {
   const { currentUser } = useAuth();
-
 
   return (
     <>
@@ -37,24 +37,25 @@ const Navbar = () => {
                   <li className="nav-item" ><NavLink to="/contact" activeclassname="active">Contact</NavLink></li>
                   
                   {currentUser ? <li className="nav-item nav-login-page" ><ProfileAfterLogIn /></li>
-                    : <li className="nav-item nav-login-page" ><NavLink to="/login" activeclassname="active"><Button
-                      fullWidth
-                      variant="contained"
-                      size='small'
-                      sx={{
-                        color: 'white',
-                        bgcolor: '#2e8d45', '&:hover': {
-                          background: "#35a450",
-                        },
-                        ml: 1,
-                        mr: -1,
-                        mt: -0.3,
-                        textTransform: 'none'
-                      }}//#15be3d
-                    >
-                      <Typography component="h1" variant="h6">
-                        Log In
-                      </Typography>
+                    : <li className="nav-item nav-login-page" ><NavLink to="/login" activeclassname="active">
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        size='small'
+                        sx={{
+                          color: 'white',
+                          bgcolor: '#2e8d45', '&:hover': {
+                            background: "#35a450",
+                          },
+                          ml: 1,
+                          mr: -1,
+                          mt: -0.3,
+                          textTransform: 'none'
+                        }}//#15be3d
+                      >
+                        <Typography component="h1" variant="h6">
+                          Log In
+                        </Typography>
                     </Button></NavLink></li>}
                 </ul>
               </div>

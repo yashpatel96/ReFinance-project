@@ -5,7 +5,6 @@ import {
   Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Alert
 } from '@mui/material';
 import { useAuth } from '../../../firebase/AuthContext';
-import axios from "axios";
 
 const LogIn = () => {
   const [email, setEmail] = useState('');
@@ -37,11 +36,7 @@ const LogIn = () => {
       setError("")
       setLoading(true)
       await login(email, password);
-      await axios
-        .get(process.env.REACT_APP_LOCAL + "user")
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
-      navigate("/", {replace: true})
+      navigate("/", {}, {replace: true})
     }
     catch (error) {
       const invalidEmail = "Firebase: Error (auth/invalid-email)."

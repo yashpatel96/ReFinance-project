@@ -8,6 +8,7 @@ window.Chart = Chart
 const Graph = ({ symbol }) => {
   const [data, setData] = useState([]);
   const [timestamp, setTimestamp] = useState([]);
+  
   useEffect(() => {
   axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
     .then(res => {
