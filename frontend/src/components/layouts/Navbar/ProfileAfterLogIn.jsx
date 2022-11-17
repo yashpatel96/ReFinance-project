@@ -8,7 +8,7 @@ import { useAuth } from '../../../firebase/AuthContext';
 const ProfileAfterLogIn = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [error, setError] = useState("");
-  const { currentUser, logout } = useAuth()
+  const {  logout } = useAuth() // currentUser, 
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
@@ -24,9 +24,10 @@ const ProfileAfterLogIn = () => {
     try {
       await logout()
       navigate("/") //{replace: true}
-    } catch (error) {
+    } catch (e) {
+      console.log(e)
+      setError("Failed to log out");
       console.log(error)
-      setError("Failed to log out")
     }
   }
 

@@ -1,5 +1,5 @@
 import React from "react"; //, useState
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layouts/Navbar/Navbar";
 //import IndexScroll from "./components/layouts/Index_Scroll/IndexScroll";
