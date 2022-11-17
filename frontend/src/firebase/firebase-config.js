@@ -11,6 +11,15 @@ const firebaseConfig = {
 	appId: process.env.REACT_APP_FIREBASE_appId,
 };
 
+/* const firebaseConfig = {
+  apiKey: "AIzaSyCzLJu4EzDyHqGzHlBwPsRGohMpJ_l2c2M",
+  authDomain: "refinance-552f5.firebaseapp.com",
+  projectId: "refinance-552f5",
+  storageBucket: "refinance-552f5.appspot.com",
+  messagingSenderId: "31318690737",
+  appId: "1:31318690737:web:5bbfacc69b3faf7116cb90"
+}; */
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const storage = getStorage(app)

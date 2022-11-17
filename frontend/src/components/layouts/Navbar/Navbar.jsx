@@ -35,7 +35,7 @@ const Navbar = () => {
                   <li className="nav-item" ><NavLink end to="/" activeclassname="active" >Home</NavLink></li>
                   {currentUser ? <li className="nav-item" ><NavLink to="/favourites" activeclassname="active">Favourites</NavLink></li> : ""}
                   <li className="nav-item" ><NavLink to="/contact" activeclassname="active">Contact</NavLink></li>
-                  
+
                   {currentUser ? <li className="nav-item nav-login-page" ><ProfileAfterLogIn /></li>
                     : <li className="nav-item nav-login-page" ><NavLink to="/login" activeclassname="active">
                       <Button
@@ -56,7 +56,7 @@ const Navbar = () => {
                         <Typography component="h1" variant="h6">
                           Log In
                         </Typography>
-                    </Button></NavLink></li>}
+                      </Button></NavLink></li>}
                 </ul>
               </div>
             </Grid>

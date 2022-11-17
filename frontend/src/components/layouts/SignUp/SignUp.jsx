@@ -6,14 +6,15 @@ import {
   Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Alert
 } from '@mui/material';
 import { useAuth } from '../../../firebase/AuthContext';
-import {ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/firebase-config';
-import {v4} from 'uuid';
+import { v4 } from 'uuid';
 import axios from "axios";
 
 const regName = /^[a-zA-Z]+$/;
-const regEmail = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const regEmail = /[A-Za-z0-9]+@[A-Za-z]+\.[A-Za-z]{2,3}/;
 const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/;
+//const defaultLink = "https://firebasestorage.googleapis.com/v0/b/refinance-552f5.appspot.com/o/images%2Fdefault_image.jpg?alt=media&token=25c27aef-0ef4-4996-9565-c953f8820d64"
 
 const SignUp = () => {
   const [firstname, setFirstname] = useState('');
@@ -22,7 +23,8 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [cpassword, setCPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
-  const [avatarLink, setAvatarLink] = useState("");
+  let avatarLink = ""
+  //const [avatarLink, setAvatarLink] = useState("");
 
   const [error, setError] = useState("");
   const [firstnameError, setFirstnameError] = useState('');
@@ -33,8 +35,10 @@ const SignUp = () => {
   const [emailErrorCheck, setEmailErrorCheck] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [passwordErrorCheck, setPasswordErrorCheck] = useState(false);
-/*   const [cpasswordError, setCPasswordError] = useState("");
-  const [cpasswordErrorCheck, setCPasswordErrorCheck] = useState(false); */
+  /*   const [cpasswordError, setCPasswordError] = useState("");
+    const [cpasswordErrorCheck, setCPasswordErrorCheck] = useState(false); */
+
+
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -43,22 +47,22 @@ const SignUp = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!firstname){
+    if (!firstname) {
       setFirstnameErrorCheck(true);
       return setFirstnameError("First name is required")
     }
 
-    if (!regName.test(firstname)){
+    if (!regName.test(firstname)) {
       setFirstnameErrorCheck(true)
       return setFirstnameError("Incorrect first name")
     }
 
-    if (!lastname){
+    if (!lastname) {
       setLastnameErrorCheck(true);
       return setLastnameError("Last name is required")
     }
 
-    if (!regName.test(lastname)){
+    if (!regName.test(lastname)) {
       setLastnameErrorCheck(true)
       return setLastnameError("Incorrect first name")
     }
@@ -68,7 +72,7 @@ const SignUp = () => {
       return setEmailError("Email is required")
     }
 
-    if (!regEmail.test(email)){
+    if (!regEmail.test(email)) {
       setEmailErrorCheck(true)
       return setEmailError("Incorrect email, use abc@example.com format")
     }
@@ -78,7 +82,7 @@ const SignUp = () => {
       return setPasswordError("Password is required")
     }
 
-    if (!regPassword.test(password)){
+    if (!regPassword.test(password)) {
       setPasswordErrorCheck(true)
       return setPasswordError("Needs to have a capital letter, a small letter, a number and a special character")
     }
@@ -86,38 +90,32 @@ const SignUp = () => {
     if (password !== cpassword) {
       return setError("Passwords do not match");
     }
-
-    
-
     /* if (!cpassword) {
       setCPasswordErrorCheck(true)
       return setCPasswordError("Password is required, cannot be empty")
     } */
 
+    if (!avatar) { //  === null
+      avatarLink = "https://firebasestorage.googleapis.com/v0/b/refinance-552f5.appspot.com/o/images%2Fdefault_image.jpg?alt=media&token=25c27aef-0ef4-4996-9565-c953f8820d64"
+    }
+    else {
+      const fileName = `images/${avatar.name + v4()}`
+      const imageRef = ref(storage, fileName);
+      await uploadBytes(imageRef, avatar)
+      avatarLink = await getDownloadURL(imageRef);
+    }
+
     try {
       setError("")
       setLoading(true)
       await signup(email, password);
-
-      if (avatar === null) {
-        console.log("In here")
-       setAvatarLink("https://firebasestorage.googleapis.com/v0/b/refinance-552f5.appspot.com/o/images%2Fdefault_image.jpg?alt=media&token=25c27aef-0ef4-4996-9565-c953f8820d64");
-      }
-      else{
-        const fileName = `images/${avatar.name + v4()}`
-        const imageRef = ref(storage, fileName);
-        await uploadBytes(imageRef, avatar);
-        getDownloadURL(fileName).then((url) => {
-         setAvatarLink(url);
-      });
-      }
-
       await axios.post(process.env.REACT_APP_LOCAL + "user/signup", {
-      user_email: email.toLowerCase(),
-			user_firstname: firstname,
-			user_lastname: lastname,
-			user_avatar: avatarLink,
+        user_email: email.toLowerCase(),
+        user_firstname: firstname,
+        user_lastname: lastname,
+        user_avatar: avatarLink,
       })
+
         //.then((res) => setUserData(res.data)) // console.log(res.data)
         .catch((err) => console.log(err));
       navigate("/", { replace: true })
@@ -133,7 +131,7 @@ const SignUp = () => {
       email: email,
       password: password,
       cpassword: cpassword,
-      avatar: avatar,
+      avatar: avatarLink,
     });
   };
 
@@ -267,11 +265,11 @@ const SignUp = () => {
           <Button
             variant="contained"
             component="label"
-            //onChange={(e) => { setAvatar(e.target.files[0]) }}
-            /* name="avatar"
+            onChange={(e) => { setAvatar(e.target.files[0]) }}
+            name="avatar"
             label="Avatar"
             type="file"
-            id="avatar" */
+            id="avatar"
             sx={{
               width: '70%',
               mt: 1.5, mb: 1, bgcolor: '#145ea8', '&:hover': {
@@ -279,8 +277,9 @@ const SignUp = () => {
               },
             }}>
             Upload Avatar Image
-            <input type="file" id="avatar" name="avatar" onChange={e => setAvatar(e.target.files[0])} hidden accept="image/*" />
-          </Button> {avatar && avatar.name}
+            <input type="file" hidden accept="image/*" /> {/* id="avatar" name="avatar" onChange={(e) => setAvatar(e.target.files[0])} */}
+          </Button>
+          <Typography variant="body2">{avatar && "Image: " + avatar.name}</Typography>
           <Button
             type="submit"
             fullWidth
