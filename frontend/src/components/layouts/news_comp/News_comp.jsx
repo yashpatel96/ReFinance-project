@@ -1,26 +1,25 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography, CardActionArea, Link } from '@mui/material'
+import './News_comp.css'
 
 const NewsComp = (props) => {
 
   const { image, title, description, link } = props;
 
+  /* '&:hover': { color: "#1a28a8", }, */
+
   return (
-    <Card sx={{ mb: 2, boxShadow: 2 }}>
+    <Card className='news_card' sx={{ mb: 2, boxShadow: 2 }}>
       <Link href={link} sx={{ color: 'black' }}>
-        <CardActionArea sx={{ display: 'flex', flexDirection: 'row' }}>
+        <CardActionArea sx={{ display: 'flex', flexDirection: 'row'}}>
           <CardMedia
             component="img"
             height="100"
             image={image}
             alt={title}
           />
-          <CardContent sx={{
-            '&:hover': {
-              color: "#1a28a8",
-            },
-          }}>
-            <Typography variant="h6" >
+          <CardContent>
+            <Typography variant="h6" className="news_title">
               {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">

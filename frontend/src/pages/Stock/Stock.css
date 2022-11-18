@@ -1,0 +1,31 @@
+.main_test {
+	max-width: 1000px;
+	margin: auto;
+	justify-content: center;
+	align-items: center;
+}
+
+.mainweb {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr) 0.5fr;
+	grid-template-rows: 0.4fr repeat(3, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+}
+
+.home_graph {
+	grid-area: 1 / 1 / 2 / 3;
+}
+
+.favourite {
+	grid-area: 1 / 3 / 5 / 4;
+}
+
+.news {
+	grid-area: 2 / 1 / 5 / 3;
+}
+
+.home_graph {
+	margin: 10px;
+	width: 100%;
+}
