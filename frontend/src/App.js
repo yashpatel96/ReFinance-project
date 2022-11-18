@@ -8,6 +8,7 @@ import { Container } from "@mui/material";
 import SignUp from "./components/layouts/SignUp/SignUp";
 import { AuthProvider } from "./firebase/AuthContext";
 import PrivateRoute from "./components/layouts/PrivateRouter.js/PrivateRoute";
+import { AddStock, RemoveStock, AddNews, RemoveNews} from "./components/layouts/admin";
 
 function App() {
 	//const { currentUser } = useAuth();
@@ -29,6 +30,10 @@ function App() {
 									<Route path='/stock' element={<Stock />} />
 									<Route path='/login' element={<PrivateRoute><Login /></PrivateRoute>} />
 									<Route path='/signup' element={<PrivateRoute><SignUp /></PrivateRoute>} />
+									<Route path='/addstock' element={<AddStock />} />
+									<Route path='/removestock' element={<RemoveStock />} />
+									<Route path='/addnews' element={<AddNews />} />
+									<Route path='/removenews' element={<RemoveNews />} />
 									{/* <Route path='/*' element={<NotFound />} /> */}
 								</Routes>
 							</div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Favourites.css';
-import { Box, List, ListItem, ListItemButton, ListItemText, Divider, Typography, Button } from '@mui/material'
+import { Box, List, ListItem, ListItemButton, ListItemText, Divider, Typography } from '@mui/material' //Button
 import axios from 'axios';
 import { useAuth } from '../../../firebase/AuthContext';
 

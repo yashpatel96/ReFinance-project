@@ -1,17 +1,17 @@
 //https://mui.com/material-ui/react-app-bar/#main-content
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { Box, IconButton, Menu, Avatar, Tooltip, MenuItem, Typography, ListItemIcon } from "@mui/material";
 import Logout from '@mui/icons-material/Logout';
 import { useAuth } from '../../../firebase/AuthContext';
 import axios from 'axios';
 
 const settings = [
-  { "name": "Add Stock", "handle_function": "handleAddStock" },
-  { "name": "Remove Stock", "handle_function": "handleRemoveStock" },
-  { "name": "Add News", "handle_function": "handleAddNews" },
-  { "name": "Remove News", "handle_function": "handleRemoveNews" }]
+  { "name": "Add Stock", "func": "addstock" },
+  { "name": "Remove Stock", "func": "removestock" },
+  { "name": "Add News", "func": "addnews" },
+  { "name": "Remove News", "func": "removenews" }]
 
 const ProfileAfterLogIn = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -76,8 +76,10 @@ const ProfileAfterLogIn = () => {
           <Typography textAlign="left" sx={{ ml: 2, mr: 2, fontSize: 18, fontWeight: 600 }}>{userData && ("Hello, " + userData.firstname)}</Typography>
           {userData && userData.role === "admin" ?
             settings.map((setting) => (
-              <MenuItem key={setting.name} onClick={() => { handleCloseUserMenu(); setting.handle_function() }}>
+              <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                <NavLink to={`/${setting.func}`}>
                 <Typography textAlign="center">{setting.name}</Typography>
+              </NavLink>
               </MenuItem>
             )) : ""}
           <MenuItem onClick={() => { handleLogout(); handleCloseUserMenu(); }}>
@@ -94,16 +96,16 @@ const ProfileAfterLogIn = () => {
 
 export default ProfileAfterLogIn;
 /* 
-<MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center"></Typography>
-          </MenuItem>
-          <MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">Remove Stock</Typography>
-          </MenuItem>
-          <MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">Add News</Typography>
-          </MenuItem>
-          <MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">Remove News</Typography>
-          </MenuItem>
-           */
+  <MenuItem onClick={handleCloseUserMenu}>
+  <Typography textAlign="center"></Typography>
+  </MenuItem>
+  <MenuItem onClick={handleCloseUserMenu}>
+  <Typography textAlign="center">Remove Stock</Typography>
+  </MenuItem>
+  <MenuItem onClick={handleCloseUserMenu}>
+  <Typography textAlign="center">Add News</Typography>
+  </MenuItem>
+  <MenuItem onClick={handleCloseUserMenu}>
+  <Typography textAlign="center">Remove News</Typography>
+  </MenuItem>
+*/

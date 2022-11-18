@@ -26,12 +26,17 @@ class addHomeNews {
 const addPassedHomeNewsData = async (req, res) => {
 	const reqBody = req.body;
 	const addData = new addHomeNews(reqBody);
-	const result = await addData.addHomeNewsData();
-
-	if (await getUserRole(addData.user_email)) {
-		return res.json(result);
+	try{
+		await addData.addHomeNewsData();
+	} 
+	catch{
+		return res.status(400).json("Not Added to Home News");
 	}
-	return res.status(400).json("User is not admin to add new Home News to db");
+	return res.status(200).json({status: 'ok'})
+	/* if (await getUserRole(addData.user_email)) {
+		return res.json(result);
+	} */
+	
 };
 
 module.exports = addPassedHomeNewsData;
