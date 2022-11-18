@@ -1,8 +1,8 @@
 import React from 'react';
-import './Favourites.css';
 import { useAuth } from '../../../firebase/AuthContext';
 import LoggedInFavourites from './LoggedInFavourites';
 import NotLoggedInFavourites from './NotLoggedInFavourites';
+import { Box } from '@mui/material';
 // import Stack from '@mui/material/Stack';
 /* 
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -12,7 +12,13 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 
 const Favourites = () => {
   const { currentUser } = useAuth()
-  return (!currentUser) ? <NotLoggedInFavourites /> : <LoggedInFavourites />;
+  return (
+    <Box sx={{ width: '100%', minHeight: 250, minWidth: 210, maxWidth: 360, ml: 4, mt: 3, borderRadius: 1, boxShadow: 2, border: 1, borderColor: 'grey.300' }}>
+      <nav aria-label="main mailbox folders">
+        {!currentUser ? <NotLoggedInFavourites /> : <LoggedInFavourites />}
+      </nav>
+    </Box>
+  )
 }
 
 export default Favourites;

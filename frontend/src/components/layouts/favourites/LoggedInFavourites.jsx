@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Favourites.css';
-import { Box, List, ListItem, ListItemButton, ListItemText, Divider, Typography } from '@mui/material' //Button
+import { List, ListItem, ListItemButton, ListItemText, Divider, Typography } from '@mui/material' //Button
 import axios from 'axios';
 import { useAuth } from '../../../firebase/AuthContext';
 
@@ -25,11 +24,9 @@ const LoggedInFavourites = () => {
   //  <div className='favourites-container'>
   return (
 
-    <Box sx={{ width: '100%', minHeight: 250, minWidth: 210, maxWidth: 360, ml: 4, mt: 2, borderRadius: 1, boxShadow: 2, border: 1, borderColor: 'grey.300' }}>
-      <nav aria-label="main mailbox folders">
-        <List>
-          <Typography variant='h5' sx={{ ml: 2, fontWeight: "bold" }}>Favourites</Typography>
-          {/* <Button
+    <List>
+      <Typography variant='h5' sx={{ ml: 2, fontWeight: "bold" }}>Favourites</Typography>
+      {/* <Button
             fullWidth
             onClick={handleState}
             variant="contained"
@@ -41,31 +38,27 @@ const LoggedInFavourites = () => {
           >
             Hello
           </Button> */}
-          {userData.length === 0 ? (
-            <List>
-              <ListItem sx={{ mt: '3rem' }}>
-                <Typography variant='body2' sx={{ ml: 1.4, fontWeight: "bold" }}>Add a stock to favourites to display here
-                </Typography>
-              </ListItem>
-            </List>
-          ) : (userData && userData.map((stockName) => {
-            return (
-              <div key={stockName}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={stockName} />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-              </div>
-            )
-          })
-          )}
-
-
+      {userData.length === 0 ? (
+        <List>
+          <ListItem sx={{ mt: '3rem' }}>
+            <Typography variant='body2' sx={{ ml: 1.4, fontWeight: "bold" }}>Add a stock to favourites to display here
+            </Typography>
+          </ListItem>
         </List>
-      </nav>
-    </Box>
+      ) : (userData && userData.map((stockName) => {
+        return (
+          <div key={stockName}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText primary={stockName} />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </div>
+        )
+      })
+      )}
+    </List>
   )
 }
 

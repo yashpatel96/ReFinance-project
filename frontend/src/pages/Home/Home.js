@@ -41,6 +41,7 @@ const Home = () => {
 			<div className='mainweb'>
 				<div className='home_graph'>
 					<Graph symbol={sym} />
+					
 				</div>
 				<div className='favourite'>
 					<Favourites />

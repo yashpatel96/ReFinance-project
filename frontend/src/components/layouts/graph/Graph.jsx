@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
+import StockInfo from '../stockInfo/StockInfo';
 import('./Graph.css');
 window.Chart = Chart
 
@@ -131,8 +132,8 @@ const Graph = ({ symbol }) => {
           </div>
 
           <div className='graph_details_container'>
-            <h4>HEllo THIS IS WHO I AM TESTING</h4>
-
+            {/* <h4>HEllo THIS IS WHO I AM TESTING</h4> */}
+            <StockInfo />
           </div>
         </div>
       </div>
