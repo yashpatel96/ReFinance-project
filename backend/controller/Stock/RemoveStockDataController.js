@@ -1,4 +1,4 @@
-const { countStock, removeStockDataFromDB } = require("../../model/StockDataModel");
+const { findStockToRemove, removeStockDataFromDB } = require("../../model/StockDataModel");
 const { getUserRole } = require("../../model/UserDataModel");
 //const axios = require("axios");
 
@@ -12,25 +12,28 @@ class removeStock {
 	};
 
 	removeStockData = async () => {
-		if ((await this.checkUserIsAdmin()) && (await countStock(this.stockToRemove.symbol)) === 1) {
+		if (
+			(await this.checkUserIsAdmin()) &&
+			(await findStockToRemove(this.stockToRemove.symbol, this.stockToRemove.type, this.stockToRemove.currency))
+		) {
 			const result = await removeStockDataFromDB(this.stockToRemove);
+			console.log(result)
 			return result;
 		}
-		return false;
+		return error;
 	};
 }
 
 const removeStockData = async (req, res) => {
 	const reqBody = req.body;
 	const removeData = new removeStock(reqBody);
-	console.log(await removeData.removeStockData());
-
-	const stockName = reqBody.symbol;
-	const userEmail = reqBody.user_email;
-	if (await getUserRole(userEmail)) {
-		return await res.json(`The stock symbol: ${stockName} has been added to the database, userEmail=${userEmail}!`);
+	//console.log(await removeData.removeStockData());
+	try {
+		await removeData.removeStockData();
+		return res.status(200).json({ status: "ok" });
+	} catch {
+		return res.status(400).json("Error Occured, Stock has not been removed from database");
 	}
-	return res.status(400).json("User is not admin to add new stock to the db");
 };
 
 module.exports = removeStockData;

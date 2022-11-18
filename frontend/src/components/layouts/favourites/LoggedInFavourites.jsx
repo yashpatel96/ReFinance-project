@@ -8,19 +8,19 @@ const LoggedInFavourites = () => {
   const [userData, setUserData] = useState([]);
   //const [stockData, setStockData] = useState();
   const { currentUser } = useAuth()
-  
+
   useEffect(() => {
     axios
       .post(process.env.REACT_APP_LOCAL + "user", {
         user_email: currentUser.email.toLowerCase()
       })
-      .then((res) => { setUserData(res.data.favourites); console.log(res.data.favourites) }) // console.log(res.data)
+      .then((res) => { setUserData(res.data.favourites); }) // console.log(res.data.favourites)
       .catch((err) => console.log(err));
   }, [currentUser.email]);
 
-/* function handleState () {
-  setUserData(prev => [...prev, "AAPL"]);
-} */
+  /* function handleState () {
+    setUserData(prev => [...prev, "AAPL"]);
+  } */
 
   //  <div className='favourites-container'>
   return (
@@ -42,13 +42,13 @@ const LoggedInFavourites = () => {
             Hello
           </Button> */}
           {userData.length === 0 ? (
-          <List>
-              <ListItem sx={{ mt:'3rem'}}>
+            <List>
+              <ListItem sx={{ mt: '3rem' }}>
                 <Typography variant='body2' sx={{ ml: 1.4, fontWeight: "bold" }}>Add a stock to favourites to display here
                 </Typography>
               </ListItem>
             </List>
-          ) : ( userData && userData.map((stockName) => {
+          ) : (userData && userData.map((stockName) => {
             return (
               <div key={stockName}>
                 <ListItem disablePadding>
@@ -60,7 +60,7 @@ const LoggedInFavourites = () => {
               </div>
             )
           })
-        )}
+          )}
 
 
         </List>

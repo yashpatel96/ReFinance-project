@@ -11,7 +11,7 @@ import { useDocumentTitle } from "../../components/layouts/Title/Title";
 const Home = () => {
 	useDocumentTitle("");
 	const [homeNews, setHomeNews] = useState([]);
-	const sym = "MSFT"
+	const sym = "MSFT";
 
 	useEffect(() => {
 		axios
@@ -24,7 +24,13 @@ const Home = () => {
 		return (
 			values.summary !== "" && (
 				<div key={key}>
-					<NewsComp image={values.image} title={values.title} description={values.description} link={values.link} />
+					<NewsComp
+						image={values.image}
+						title={values.title}
+						description={values.description}
+						link={values.link}
+						uploaded_datetime={values.uploaded_datetime / 1000}
+					/>
 				</div>
 			)
 		);

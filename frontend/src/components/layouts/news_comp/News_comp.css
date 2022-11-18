@@ -1,3 +1,7 @@
 .news_card:hover .news_title {
-    color:rgb(26, 40, 168)
+	color: rgb(26, 40, 168);
+}
+
+.imageCard {
+	width: 400px;
 }

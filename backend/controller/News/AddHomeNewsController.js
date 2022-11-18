@@ -19,24 +19,23 @@ class addHomeNews {
 			const result = await addHomeNewsDataToDB(this.newsToAdd);
 			return result;
 		}
-		return console.log("false in add here");
+		return error;
 	};
 }
 
 const addPassedHomeNewsData = async (req, res) => {
 	const reqBody = req.body;
 	const addData = new addHomeNews(reqBody);
-	try{
+	try {
 		await addData.addHomeNewsData();
-	} 
-	catch{
+		return res.status(200).json({ status: "ok" });
+	} catch {
 		return res.status(400).json("Not Added to Home News");
 	}
-	return res.status(200).json({status: 'ok'})
+	
 	/* if (await getUserRole(addData.user_email)) {
 		return res.json(result);
 	} */
-	
 };
 
 module.exports = addPassedHomeNewsData;

@@ -78,8 +78,8 @@ const ProfileAfterLogIn = () => {
             settings.map((setting) => (
               <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                 <NavLink to={`/${setting.func}`}>
-                <Typography textAlign="center">{setting.name}</Typography>
-              </NavLink>
+                  <Typography textAlign="center">{setting.name}</Typography>
+                </NavLink>
               </MenuItem>
             )) : ""}
           <MenuItem onClick={() => { handleLogout(); handleCloseUserMenu(); }}>

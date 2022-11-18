@@ -16,25 +16,19 @@ class addStock {
 			const result = await addStockDataToDB(this.stockToAdd);
 			return result;
 		}
-		return false;
+		return error;
 	};
 }
 
 const addPassedStockData = async (req, res) => {
 	const reqBody = req.body;
 	const addData = new addStock(reqBody);
-	console.log(await addData.addStockData());
-
-	const stockName = reqBody.symbol;
-	const userEmail = reqBody.user_email;
-	if (await getUserRole(userEmail)) {
-		return await res.json(`The stock symbol: ${stockName} has been added to the database, userEmail=${userEmail}!`);
+	try {
+		await addData.addStockData();
+		return res.status(200).json({ status: "ok" });
+	} catch {
+		return res.status(400).json("Not Added to Home News");
 	}
-	return res.status(400).json("User is not admin to add new stock to the db");
-	//const hello = Object.keys(stockToAdd).map((key, index) => {return stockToAdd[key]});
-	// console.log(hello)
-	//const result = new addStock(stockName, stockToAdd);
-	//.status(200)
 };
 
 module.exports = addPassedStockData;

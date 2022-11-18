@@ -8,7 +8,9 @@ import { Container } from "@mui/material";
 import SignUp from "./components/layouts/SignUp/SignUp";
 import { AuthProvider } from "./firebase/AuthContext";
 import PrivateRoute from "./components/layouts/PrivateRouter.js/PrivateRoute";
-import { AddStock, RemoveStock, AddNews, RemoveNews} from "./components/layouts/admin";
+import PrivateAdminRoute from "./components/layouts/PrivateRouter.js/PrivateAdminRoute";
+import NotUser from "./components/layouts/PrivateRouter.js/NotUser";
+import { AddStock, RemoveStock, AddNews, RemoveNews } from "./components/layouts/admin";
 
 function App() {
 	//const { currentUser } = useAuth();
@@ -28,12 +30,62 @@ function App() {
 									<Route path='/favourites' element={<Favourites />} />
 									<Route path='/contact' element={<Contact />} />
 									<Route path='/stock' element={<Stock />} />
-									<Route path='/login' element={<PrivateRoute><Login /></PrivateRoute>} />
-									<Route path='/signup' element={<PrivateRoute><SignUp /></PrivateRoute>} />
-									<Route path='/addstock' element={<AddStock />} />
-									<Route path='/removestock' element={<RemoveStock />} />
-									<Route path='/addnews' element={<AddNews />} />
-									<Route path='/removenews' element={<RemoveNews />} />
+									<Route
+										path='/login'
+										element={
+											<PrivateRoute>
+												<Login />
+											</PrivateRoute>
+										}
+									/>
+									<Route
+										path='/signup'
+										element={
+											<PrivateRoute>
+												<SignUp />
+											</PrivateRoute>
+										}
+									/>
+									<Route
+										path='/addstock'
+										element={
+											<NotUser>
+												<PrivateAdminRoute>
+													<AddStock />
+												</PrivateAdminRoute>
+											</NotUser>
+										}
+									/>
+									<Route
+										path='/removestock'
+										element={
+											<NotUser>
+												<PrivateAdminRoute>
+													<RemoveStock />
+												</PrivateAdminRoute>
+											</NotUser>
+										}
+									/>
+									<Route
+										path='/addnews'
+										element={
+											<NotUser>
+												<PrivateAdminRoute>
+													<AddNews />
+												</PrivateAdminRoute>
+											</NotUser>
+										}
+									/>
+									<Route
+										path='/removenews'
+										element={
+											<NotUser>
+												<PrivateAdminRoute>
+													<RemoveNews />
+												</PrivateAdminRoute>
+											</NotUser>
+										}
+									/>
 									{/* <Route path='/*' element={<NotFound />} /> */}
 								</Routes>
 							</div>

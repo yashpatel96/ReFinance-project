@@ -46,21 +46,25 @@ const addStockDataToDB = async (stockToAdd) => {
 		});
 	} catch (e) {
 		console.error(e);
-		return false;
+		return e;
 	}
 	return true;
 };
 
-const removeStockDataFromDB = async (stockToAdd) => {
+const findStockToRemove = async (stockName, type, currency) => {
+	return (await db.countDocuments({ symbol: stockName, type: type, currency: currency })) === 1;
+};
+
+const removeStockDataFromDB = async (stockToRemove) => {
 	try {
 		await db.deleteOne({
-			currency: stockToAdd.currency,
-			type: stockToAdd.type,
-			symbol: stockToAdd.symbol,
+			currency: stockToRemove.currency,
+			type: stockToRemove.type,
+			symbol: stockToRemove.symbol,
 		});
 	} catch (e) {
 		console.error(e);
-		return false;
+		return e;
 	}
 	return true;
 };
@@ -72,4 +76,5 @@ module.exports = {
 	updateData,
 	addStockDataToDB,
 	removeStockDataFromDB,
+	findStockToRemove,
 };

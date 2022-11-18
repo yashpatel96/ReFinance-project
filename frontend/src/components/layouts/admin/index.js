@@ -1,6 +1,6 @@
-import AddStock from './AddStock/AddStock';
-import RemoveStock from './RemoveStock/RemoveStock';
-import AddNews from './AddNews/AddNews';
-import RemoveNews from './RemoveNews/RemoveNews';
+import AddStock from './AddStock';
+import RemoveStock from './RemoveStock';
+import AddNews from './AddNews';
+import RemoveNews from './RemoveNews';
 
 export { AddStock, RemoveStock, AddNews, RemoveNews};

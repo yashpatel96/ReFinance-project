@@ -12,7 +12,7 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 
 const Favourites = () => {
   const { currentUser } = useAuth()
-  return (!currentUser) ?  <NotLoggedInFavourites/> : <LoggedInFavourites/>;
+  return (!currentUser) ? <NotLoggedInFavourites /> : <LoggedInFavourites />;
 }
 
 export default Favourites;

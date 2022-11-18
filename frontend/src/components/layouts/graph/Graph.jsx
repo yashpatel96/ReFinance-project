@@ -8,16 +8,16 @@ window.Chart = Chart
 const Graph = ({ symbol }) => {
   const [data, setData] = useState([]);
   const [timestamp, setTimestamp] = useState([]);
-  
+
   useEffect(() => {
-  axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
-    .then(res => {
-      setData(res.data.candle.result.c);
-      setTimestamp(res.data.candle.result.t);
-    })
-    .catch(err =>
-      console.log(err))
-    }, [symbol]);
+    axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
+      .then(res => {
+        setData(res.data.candle.result.c);
+        setTimestamp(res.data.candle.result.t);
+      })
+      .catch(err =>
+        console.log(err))
+  }, [symbol]);
   //console.log(new Date(1668539584 * 1000).toLocaleString());
 
   /* useEffect(() => {
@@ -59,13 +59,13 @@ const Graph = ({ symbol }) => {
         )
       })
     ) console.log(new Date(1668539584 * 1000).toLocaleString());
-  }); */ 
+  }); */
   const labels = timestamp.map(values => {
-    return new Date(values*1000).toLocaleDateString();
+    return new Date(values * 1000).toLocaleDateString();
   })
   /* 
    */
-//console.log(labels)
+  //console.log(labels)
   const open_Data = data.map(values => {
     return (
       values
