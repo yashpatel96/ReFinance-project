@@ -17,7 +17,7 @@ const ProfileAfterLogIn = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [error, setError] = useState("");
   const [userData, setUserData] = useState();
-  const { logout, currentUser } = useAuth() // currentUser, 
+  const { logout, currentUser } = useAuth()
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const ProfileAfterLogIn = () => {
       .post(process.env.REACT_APP_LOCAL + "user", {
         user_email: currentUser.email.toLowerCase()
       })
-      .then((res) => { setUserData(res.data); }) // console.log(res.data)
+      .then((res) => { setUserData(res.data); })
       .catch((err) => console.log(err));
   }, [currentUser.email]);
 

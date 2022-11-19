@@ -1,12 +1,12 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography, CardActionArea, Link } from '@mui/material'
 import './News_comp.css'
-import moment from 'moment'
+//import moment from 'moment'
 
 const NewsComp = (props) => {
 
   const { image, title, description, link, uploaded_datetime } = props;
-  const uploadedDate = moment.unix(uploaded_datetime).format('LL')
+  const uploadedDate =  uploaded_datetime // moment.unix(uploaded_datetime).format('LL')
   /* '&:hover': { color: "#1a28a8", }, */
 
   return (
