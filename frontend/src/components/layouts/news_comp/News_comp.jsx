@@ -6,7 +6,7 @@ import './News_comp.css'
 const NewsComp = (props) => {
 
   const { image, title, description, link, uploaded_datetime } = props;
-  const uploadedDate =  uploaded_datetime // moment.unix(uploaded_datetime).format('LL')
+  const uploadedDate =  moment.unix(uploaded_datetime).format('LL') // uploaded_datetime
   /* '&:hover': { color: "#1a28a8", }, */
 
   return (

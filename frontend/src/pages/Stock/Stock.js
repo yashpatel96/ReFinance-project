@@ -67,6 +67,8 @@ const Stock = () => {
 		);
 	});
 
+	console.log(stockData, stockCandle);
+
 	return (
 		<div className='main_test'>
 			<div className='mainweb'>
