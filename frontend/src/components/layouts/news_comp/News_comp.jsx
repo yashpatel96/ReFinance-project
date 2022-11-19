@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography, CardActionArea, Link } from '@mui/material'
 import './News_comp.css'
-//import moment from 'moment'
+import moment from 'moment'
 
 const NewsComp = (props) => {
 
