@@ -1,6 +1,8 @@
 const { countStock, checkFieldExist, findData, updateData } = require("../../model/StockDataModel");
 const axios = require("axios");
 
+// https://finnhub.io/api/v1/stock/metric?symbol=AAPL&metric=all&token=cc7sokqad3i03farbm4g
+
 class getStock {
 	constructor(stock_name, field_name) {
 		this.stock_name = stock_name;
@@ -35,10 +37,10 @@ class getStock {
 
 	getNewCompanyData = async () => {
 		//const basic_financial = `https://finnhub.io/api/v1/stock/metric?symbol=${stock_name}&metric=all&token=${process.env.FINHUB_API_KEY}`;
-		const dataLink = `https://finnhub.io/api/v1/quote?symbol=${this.stock_name}&token=${process.env.FINHUB_API_KEY}`;
+		const dataLink = `https://finnhub.io/api/v1/stock/metric?symbol=${this.stock_name}&metric=all&token=${process.env.FINHUB_API_KEY}`;
 		return await this.getDataApi(dataLink);
 	};
-
+// https://finnhub.io/api/v1/stock/metric?symbol=AAPL&metric=all&token=cc7sokqad3i03farbm4g
 	getNewNewsData = async () => {
 		const startDate = new Date(Date.now() - 604800).toISOString().slice(0, 10);
 		const endDate = new Date().toISOString().slice(0, 10);
@@ -69,15 +71,15 @@ class getStock {
 				console.log("Error Occured getting new data, Try Again!");
 				break;
 		}
-		console.log(await result);
+		//console.log("Hello",await result.metric);
+		//console.log(result)
 		//!== {} && result !== "" && result !== null && result !== []
 		if (!result) {
-			console.log("In here");
-			await updateData(this.stock_name, this.field_name, result);
+			return await this.searchData();
 		}
 
-		const res = await this.searchData();
-		return res;
+		await updateData(this.stock_name, this.field_name, result.metric);
+		return await this.searchData();
 	};
 
 	findStockData = async () => {
@@ -88,7 +90,6 @@ class getStock {
 		}
 
 		const result = await this.searchData();
-		console.log(result)
 		const FIVE_MINUTE_DELAY = 300000;
 		const LastUpdatedUnix = Math.floor(new Date(result[this.field_name].LastUpdated).getTime());
 		const fiveMinuteDelayUnix = Math.floor(Date.now() - FIVE_MINUTE_DELAY);

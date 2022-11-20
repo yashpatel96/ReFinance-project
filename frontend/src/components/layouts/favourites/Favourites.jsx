@@ -13,7 +13,7 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 const Favourites = () => {
   const { currentUser } = useAuth()
   return (
-    <Box sx={{ width: '100%', minHeight: 250, minWidth: 210, maxWidth: 360, ml: 4, mt: 3, borderRadius: 1, boxShadow: 2, border: 1, borderColor: 'grey.300' }}>
+    <Box sx={{ width: '100%', minHeight: 260, minWidth: 200, maxWidth: 360, ml: 7, mt: 3, boxShadow: 3, borderRadius:3}}> {/* border: 1, borderColor: 'grey.300'  */}
       <nav aria-label="main mailbox folders">
         {!currentUser ? <NotLoggedInFavourites /> : <LoggedInFavourites />}
       </nav>

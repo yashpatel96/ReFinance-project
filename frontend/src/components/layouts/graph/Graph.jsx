@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; //useEffect
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
@@ -6,9 +6,10 @@ import StockInfo from '../stockInfo/StockInfo';
 import('./Graph.css');
 window.Chart = Chart
 
-const Graph = ({ symbol }) => {
+const Graph = ({ symbol, stockData, stockCandle }) => {
   const [data, setData] = useState([]);
   const [timestamp, setTimestamp] = useState([]);
+  //console.log(symbol)
 
   useEffect(() => {
     axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
@@ -19,30 +20,9 @@ const Graph = ({ symbol }) => {
       .catch(err =>
         console.log(err))
   }, [symbol]);
+
   //console.log(new Date(1668539584 * 1000).toLocaleString());
 
-  /* useEffect(() => {
-    axios.get(process.env.REACT_APP_LOCAL + 'SPX')
-      .then(res => {
-        setData(res.data);
-        //console.log( res.data);
-      })
-      .catch(err =>
-        console.log(err))
-  }, []); */
-
-  /*   useEffect(() => {
-      // const graph_id = 'APPL';
-      const graph_id = symbol[0].meta.symbol;
-      axios.get(process.env.REACT_APP_LOCAL + `graph?id=${graph_id}`)
-          .then (res =>{
-            setData(res.data);
-            //console.log( res.data);
-          })
-          .catch(err => 
-              console.log(err))
-    }, []);
-   */
 
 
   /* console.log(Object.keys(data).map(keys => {
@@ -61,6 +41,7 @@ const Graph = ({ symbol }) => {
       })
     ) console.log(new Date(1668539584 * 1000).toLocaleString());
   }); */
+
   const labels = timestamp.map(values => {
     return new Date(values * 1000).toLocaleDateString();
   })
@@ -133,7 +114,7 @@ const Graph = ({ symbol }) => {
 
           <div className='graph_details_container'>
             {/* <h4>HEllo THIS IS WHO I AM TESTING</h4> */}
-            <StockInfo />
+            <StockInfo stockData={stockData}/>
           </div>
         </div>
       </div>

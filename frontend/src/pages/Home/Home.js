@@ -11,7 +11,30 @@ import { useDocumentTitle } from "../../components/layouts/Title/Title";
 const Home = () => {
 	useDocumentTitle("");
 	const [homeNews, setHomeNews] = useState([]);
-	const sym = "MSFT";
+	const [stockData, setStockData] = useState();
+	const [stockCandle, setStockCandle] = useState();
+	const symbol = "AAPL";
+
+	/* useEffect(() => {
+		axios
+			.get(process.env.REACT_APP_LOCAL + "homenews")
+			.then((res) => setHomeNews(res.data))
+			.catch((err) => console.log(err));
+	}, []); */
+
+	useEffect(() => {
+		axios
+			.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=data`)
+			.then((res) => {
+				console.log(res)
+				setStockData(res.data.data.result)
+				})
+			.catch((err) => console.log(err));
+		axios
+			.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
+			.then((res) => setStockCandle(res.data.candle.result))
+			.catch((err) => console.log(err));
+	}, [symbol]);
 
 	useEffect(() => {
 		axios
@@ -36,11 +59,13 @@ const Home = () => {
 		);
 	});
 
+	//console.log(stockData)
+
 	return (
 		<div className='main_test'>
 			<div className='mainweb'>
 				<div className='home_graph'>
-					<Graph symbol={sym} />
+					<Graph symbol={symbol} stockData={stockData} stockCandle={stockCandle}/>
 					
 				</div>
 				<div className='favourite'>

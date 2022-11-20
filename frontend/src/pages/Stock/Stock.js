@@ -12,23 +12,25 @@ const Stock = () => {
 	useDocumentTitle("- Stock");
 	const location = useLocation();
 	const symbol = location.state.symbol;
+	const [homeNews, setHomeNews] = useState([]);
 	const [stockData, setStockData] = useState();
 	const [stockNews, setStockNews] = useState([]);
 	const [stockCandle, setStockCandle] = useState();
-	const [homeNews, setHomeNews] = useState([]);
 
 	useEffect(() => {
 		axios
 			.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=data`)
 			.then((res) => {
-				//console.log(res.data);
-				setStockData(res.data);
+				setStockData(res.data.data.result)
 			})
 			.catch((err) => console.log(err));
-		axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=news`).then((res) => {
-			console.log(res.data.news.result);
-			setStockNews(res.data.news.result);
-		});
+		axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=news`)
+			//console.log(res.data.news.result);
+			.then((res) => {
+				setStockNews(res.data.news.result);
+				//console.log(res.data);
+			})
+			.catch((err) => console.log(err));
 		axios
 			.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=candle`)
 			.then((res) => setStockCandle(res.data.candle.result))
@@ -58,28 +60,28 @@ const Stock = () => {
 		);
 	});
 
-	const news = stockNews.map((values) => {
+	const news = (stockNews && stockNews.map((values) => {
 		return (
 			<div key={values.title}>
-				{console.log(values.image, values.title, values.description, values.link)}
+				{/* {console.log(values.image, values.title, values.description, values.link)} */}
 				<NewsComp image={values.image} title={values.headline} description={values.summary} link={values.url} uploaded_datetime={values.datetime} />
 			</div>
 		);
-	});
+	}));
 
-	console.log(stockData, stockCandle);
+	console.log(stockData)
 
 	return (
 		<div className='main_test'>
 			<div className='mainweb'>
 				<div className='home_graph'>
-					<Graph symbol={symbol} />
+					<Graph symbol={symbol} stockData={stockData} stockCandle={stockCandle}/>
 				</div>
 				<div className='favourite'>
 					<Favourites />
 				</div>
 				<div className='news'>
-					{news.length === 0 ? (
+					{!news ? (
 						<Box>
 							<Typography component='h1' variant='h5' sx={{ mt: 6, mb: 2 }}>
 								No news found for this stock, but here is top news:

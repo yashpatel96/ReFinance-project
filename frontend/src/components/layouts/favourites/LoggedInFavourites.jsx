@@ -25,7 +25,7 @@ const LoggedInFavourites = () => {
   return (
 
     <List>
-      <Typography variant='h5' sx={{ ml: 2, fontWeight: "bold" }}>Favourites</Typography>
+      <Typography variant='h6' sx={{ ml: 2, fontWeight: "bold" }}>Favourites</Typography>
       {/* <Button
             fullWidth
             onClick={handleState}
