@@ -4,8 +4,6 @@ import "./Home.css";
 import Graph from "../../components/layouts/graph/Graph";
 import NewsComp from "../../components/layouts/news_comp/News_comp";
 import Favourites from "../../components/layouts/favourites/Favourites";
-//import sym from "../../components/layouts/graph/interval";
-//import company_news from "../../components/layouts/news_comp/company-news";
 import { useDocumentTitle } from "../../components/layouts/Title/Title";
 
 const Home = () => {
@@ -15,18 +13,10 @@ const Home = () => {
 	const [stockCandle, setStockCandle] = useState();
 	const symbol = "AAPL";
 
-	/* useEffect(() => {
-		axios
-			.get(process.env.REACT_APP_LOCAL + "homenews")
-			.then((res) => setHomeNews(res.data))
-			.catch((err) => console.log(err));
-	}, []); */
-
 	useEffect(() => {
 		axios
 			.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=data`)
 			.then((res) => {
-				console.log(res)
 				setStockData(res.data.data.result)
 				})
 			.catch((err) => console.log(err));
@@ -59,14 +49,11 @@ const Home = () => {
 		);
 	});
 
-	//console.log(stockData)
-
 	return (
 		<div className='main_test'>
 			<div className='mainweb'>
 				<div className='home_graph'>
 					<Graph symbol={symbol} stockData={stockData} stockCandle={stockCandle}/>
-					
 				</div>
 				<div className='favourite'>
 					<Favourites />

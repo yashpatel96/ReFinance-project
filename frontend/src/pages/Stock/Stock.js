@@ -16,7 +16,7 @@ const Stock = () => {
 	const [stockData, setStockData] = useState();
 	const [stockNews, setStockNews] = useState([]);
 	const [stockCandle, setStockCandle] = useState();
-
+	
 	useEffect(() => {
 		axios
 			.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=data`)
@@ -25,10 +25,8 @@ const Stock = () => {
 			})
 			.catch((err) => console.log(err));
 		axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=news`)
-			//console.log(res.data.news.result);
 			.then((res) => {
 				setStockNews(res.data.news.result);
-				//console.log(res.data);
 			})
 			.catch((err) => console.log(err));
 		axios
@@ -68,8 +66,6 @@ const Stock = () => {
 			</div>
 		);
 	}));
-
-	console.log(stockData)
 
 	return (
 		<div className='main_test'>

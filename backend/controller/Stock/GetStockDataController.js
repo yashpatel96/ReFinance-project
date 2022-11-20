@@ -1,4 +1,4 @@
-const { countStock, checkFieldExist, findData, updateData } = require("../../model/StockDataModel");
+const { countStock, checkFieldExist, findData, updateData, findStockInfo } = require("../../model/StockDataModel");
 const axios = require("axios");
 
 // https://finnhub.io/api/v1/stock/metric?symbol=AAPL&metric=all&token=cc7sokqad3i03farbm4g
@@ -55,6 +55,10 @@ class getStock {
 		return await this.getDataApi(dataLink);
 	};
 
+	getStockInfo = async () => {
+		return await findStockInfo(this.stock_name);
+	}
+
 	addCurrentStockData = async () => {
 		let result;
 		switch (this.field_name) {
@@ -66,6 +70,9 @@ class getStock {
 				break;
 			case "candle":
 				result = await this.getNewGraphData();
+				break;
+			case "stock":
+				result = await this.getStockInfo();
 				break;
 			default:
 				console.log("Error Occured getting new data, Try Again!");

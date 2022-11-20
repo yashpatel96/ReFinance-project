@@ -3,11 +3,14 @@ import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 import StockInfo from '../stockInfo/StockInfo';
+import { Typography, Rating } from "@mui/material";
 import('./Graph.css');
 window.Chart = Chart
 
 const Graph = ({ symbol, stockData, stockCandle }) => {
+  const [value, setValue] = useState(0);
   const [data, setData] = useState([]);
+  const [stockInfoData, setStockInfoData] = useState([]);
   const [timestamp, setTimestamp] = useState([]);
   //console.log(symbol)
 
@@ -16,6 +19,15 @@ const Graph = ({ symbol, stockData, stockCandle }) => {
       .then(res => {
         setData(res.data.candle.result.c);
         setTimestamp(res.data.candle.result.t);
+      })
+      .catch(err =>
+        console.log(err))
+  }, [symbol]);
+
+  useEffect(() => {
+    axios.get(process.env.REACT_APP_LOCAL + `stock?id=${symbol}&field=stock`)
+      .then(res => {
+        setStockInfoData(res.data);
       })
       .catch(err =>
         console.log(err))
@@ -97,15 +109,29 @@ const Graph = ({ symbol, stockData, stockCandle }) => {
   return (
     <>
       <div className="graph_parent">
-
-        <h2> {symbol}{/* {Object.keys(symbol).map(key => {
+      <Typography variant='h5'>
+        { stockInfoData.description } ({  symbol })
+        <Rating
+          name="simple-controlled"
+          max={1}
+          defaultValue={0}
+          value={value}
+          size='large'
+          sx={{ml: 2}}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        />
+			</Typography>
+      
+        
+        {/* {Object.keys(symbol).map(key => {
           return (
             <div key={key}>
               {symbol[key].meta.symbol}
             </div>
           )
         })} */}
-        </h2>
 
         <div className='testing_this'>
           <div className="graph">
@@ -114,7 +140,7 @@ const Graph = ({ symbol, stockData, stockCandle }) => {
 
           <div className='graph_details_container'>
             {/* <h4>HEllo THIS IS WHO I AM TESTING</h4> */}
-            <StockInfo stockData={stockData}/>
+            {stockData && <StockInfo stockData={stockData}/>}
           </div>
         </div>
       </div>

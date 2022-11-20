@@ -23,6 +23,20 @@ const findData = async (stockName, fieldName) => {
 	);
 };
 
+const findStockInfo = async (stockName) => {
+	return await db.findOne(
+		{ symbol: stockName },
+		{
+			projection: {
+				description: 1,
+				currency: 1,
+				mic: 1,
+				type: 1,
+			},
+		}
+	);
+};
+
 const updateData = async (stockName, fieldName, result) => {
 	return await db.updateOne(
 		{ symbol: stockName },
@@ -77,4 +91,5 @@ module.exports = {
 	addStockDataToDB,
 	removeStockDataFromDB,
 	findStockToRemove,
+	findStockInfo,
 };
